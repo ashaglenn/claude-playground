@@ -1,0 +1,404 @@
+CHECKPOINT 1 - DECISION 1
+TITLE: Checkpoint 1 - Decision 1/4
+QUESTION: What is the capital of France?
+A. Paris
+B. London
+C. Berlin
+CORRECT: A
+CORRECT_MESSAGE: Correct! Paris is the capital of France.
+
+WRONG_A_TEACHING: Actually, this answer is correct so you shouldn't see this.
+WRONG_A_REFLECTION_Q: This is a placeholder question.
+WRONG_A_REFLECTION_A: Placeholder A
+WRONG_A_REFLECTION_B: Placeholder B
+WRONG_A_REFLECTION_C: Placeholder C
+WRONG_A_REFLECTION_CORRECT: A
+WRONG_A_REFLECTION_WRONG_MSG: Placeholder message.
+
+WRONG_B_TEACHING: London is the capital of the United Kingdom, not France. France is a separate country with its own capital city.
+WRONG_B_REFLECTION_Q: Which country has London as its capital?
+WRONG_B_REFLECTION_A: United Kingdom
+WRONG_B_REFLECTION_B: France
+WRONG_B_REFLECTION_C: Germany
+WRONG_B_REFLECTION_CORRECT: A
+WRONG_B_REFLECTION_WRONG_MSG: London is the capital of the United Kingdom.
+
+WRONG_C_TEACHING: Berlin is the capital of Germany, not France. These are two different European countries.
+WRONG_C_REFLECTION_Q: Which country has Berlin as its capital?
+WRONG_C_REFLECTION_A: Germany
+WRONG_C_REFLECTION_B: France
+WRONG_C_REFLECTION_C: Austria
+WRONG_C_REFLECTION_CORRECT: A
+WRONG_C_REFLECTION_WRONG_MSG: Berlin is the capital of Germany.
+
+CHECKPOINT 1 - DECISION 2
+TITLE: Checkpoint 1 - Decision 2/4
+QUESTION: What is 2 + 2?
+A. 3
+B. 4
+C. 5
+CORRECT: B
+CORRECT_MESSAGE: Correct! 2 + 2 equals 4.
+
+WRONG_A_TEACHING: 2 + 2 is not 3. When you add two to two, you get four.
+WRONG_A_REFLECTION_Q: What is 1 + 1?
+WRONG_A_REFLECTION_A: 2
+WRONG_A_REFLECTION_B: 3
+WRONG_A_REFLECTION_C: 1
+WRONG_A_REFLECTION_CORRECT: A
+WRONG_A_REFLECTION_WRONG_MSG: 1 + 1 equals 2.
+
+WRONG_B_TEACHING: This is correct, you shouldn't see this.
+WRONG_B_REFLECTION_Q: Placeholder question.
+WRONG_B_REFLECTION_A: Placeholder A
+WRONG_B_REFLECTION_B: Placeholder B
+WRONG_B_REFLECTION_C: Placeholder C
+WRONG_B_REFLECTION_CORRECT: A
+WRONG_B_REFLECTION_WRONG_MSG: Placeholder message.
+
+WRONG_C_TEACHING: 2 + 2 is not 5. That would be 2 + 3.
+WRONG_C_REFLECTION_Q: What is 2 + 3?
+WRONG_C_REFLECTION_A: 5
+WRONG_C_REFLECTION_B: 4
+WRONG_C_REFLECTION_C: 6
+WRONG_C_REFLECTION_CORRECT: A
+WRONG_C_REFLECTION_WRONG_MSG: 2 + 3 equals 5.
+
+CHECKPOINT 1 - DECISION 3
+TITLE: Checkpoint 1 - Decision 3/4
+QUESTION: What color is the sky on a clear day?
+A. Green
+B. Red
+C. Blue
+CORRECT: C
+CORRECT_MESSAGE: Correct! The sky appears blue due to light scattering.
+
+WRONG_A_TEACHING: The sky is not green. It appears blue due to Rayleigh scattering of sunlight.
+WRONG_A_REFLECTION_Q: What causes the sky to appear blue?
+WRONG_A_REFLECTION_A: Light scattering
+WRONG_A_REFLECTION_B: Paint
+WRONG_A_REFLECTION_C: Reflection from oceans
+WRONG_A_REFLECTION_CORRECT: A
+WRONG_A_REFLECTION_WRONG_MSG: The sky appears blue due to Rayleigh scattering.
+
+WRONG_B_TEACHING: The sky is not red during a normal clear day. Red skies typically occur at sunrise or sunset.
+WRONG_B_REFLECTION_Q: When might the sky appear red?
+WRONG_B_REFLECTION_A: At sunrise or sunset
+WRONG_B_REFLECTION_B: At noon
+WRONG_B_REFLECTION_C: At midnight
+WRONG_B_REFLECTION_CORRECT: A
+WRONG_B_REFLECTION_WRONG_MSG: Red skies typically occur at sunrise or sunset.
+
+WRONG_C_TEACHING: This is correct, you shouldn't see this.
+WRONG_C_REFLECTION_Q: Placeholder question.
+WRONG_C_REFLECTION_A: Placeholder A
+WRONG_C_REFLECTION_B: Placeholder B
+WRONG_C_REFLECTION_C: Placeholder C
+WRONG_C_REFLECTION_CORRECT: A
+WRONG_C_REFLECTION_WRONG_MSG: Placeholder message.
+
+CHECKPOINT 1 - DECISION 4
+TITLE: Checkpoint 1 - Decision 4/4
+QUESTION: How many continents are there?
+A. 5
+B. 6
+C. 7
+CORRECT: C
+CORRECT_MESSAGE: Correct! There are 7 continents on Earth.
+
+WRONG_A_TEACHING: There are 7 continents, not 5. The continents are Africa, Antarctica, Asia, Australia, Europe, North America, and South America.
+WRONG_A_REFLECTION_Q: Which of these is NOT a continent?
+WRONG_A_REFLECTION_A: Greenland
+WRONG_A_REFLECTION_B: Africa
+WRONG_A_REFLECTION_C: Asia
+WRONG_A_REFLECTION_CORRECT: A
+WRONG_A_REFLECTION_WRONG_MSG: Greenland is an island, not a continent.
+
+WRONG_B_TEACHING: There are 7 continents, not 6. You might be thinking of a model that combines some continents.
+WRONG_B_REFLECTION_Q: Which two continents are sometimes combined in some models?
+WRONG_B_REFLECTION_A: Europe and Asia
+WRONG_B_REFLECTION_B: Africa and Asia
+WRONG_B_REFLECTION_C: North and South America
+WRONG_B_REFLECTION_CORRECT: A
+WRONG_B_REFLECTION_WRONG_MSG: Europe and Asia are sometimes combined as Eurasia.
+
+WRONG_C_TEACHING: This is correct, you shouldn't see this.
+WRONG_C_REFLECTION_Q: Placeholder question.
+WRONG_C_REFLECTION_A: Placeholder A
+WRONG_C_REFLECTION_B: Placeholder B
+WRONG_C_REFLECTION_C: Placeholder C
+WRONG_C_REFLECTION_CORRECT: A
+WRONG_C_REFLECTION_WRONG_MSG: Placeholder message.
+
+CHECKPOINT 2 - DECISION 1
+TITLE: Checkpoint 2 - Decision 1/4
+QUESTION: What is the largest planet in our solar system?
+A. Earth
+B. Jupiter
+C. Saturn
+CORRECT: B
+CORRECT_MESSAGE: Correct! Jupiter is the largest planet in our solar system.
+
+WRONG_A_TEACHING: Earth is not the largest planet. Jupiter is much larger - about 11 times Earth's diameter.
+WRONG_A_REFLECTION_Q: How many Earths could fit inside Jupiter?
+WRONG_A_REFLECTION_A: About 1,300
+WRONG_A_REFLECTION_B: About 10
+WRONG_A_REFLECTION_C: About 100
+WRONG_A_REFLECTION_CORRECT: A
+WRONG_A_REFLECTION_WRONG_MSG: About 1,300 Earths could fit inside Jupiter.
+
+WRONG_B_TEACHING: This is correct, you shouldn't see this.
+WRONG_B_REFLECTION_Q: Placeholder question.
+WRONG_B_REFLECTION_A: Placeholder A
+WRONG_B_REFLECTION_B: Placeholder B
+WRONG_B_REFLECTION_C: Placeholder C
+WRONG_B_REFLECTION_CORRECT: A
+WRONG_B_REFLECTION_WRONG_MSG: Placeholder message.
+
+WRONG_C_TEACHING: Saturn is the second largest planet, but Jupiter is larger. Saturn is known for its prominent rings.
+WRONG_C_REFLECTION_Q: What is Saturn most famous for?
+WRONG_C_REFLECTION_A: Its rings
+WRONG_C_REFLECTION_B: Its moons
+WRONG_C_REFLECTION_C: Its size
+WRONG_C_REFLECTION_CORRECT: A
+WRONG_C_REFLECTION_WRONG_MSG: Saturn is most famous for its prominent ring system.
+
+CHECKPOINT 2 - DECISION 2
+TITLE: Checkpoint 2 - Decision 2/4
+QUESTION: What is H2O commonly known as?
+A. Salt
+B. Sugar
+C. Water
+CORRECT: C
+CORRECT_MESSAGE: Correct! H2O is the chemical formula for water.
+
+WRONG_A_TEACHING: H2O is not salt. Salt is NaCl (sodium chloride). H2O represents two hydrogen atoms bonded to one oxygen atom.
+WRONG_A_REFLECTION_Q: What is the chemical formula for salt?
+WRONG_A_REFLECTION_A: NaCl
+WRONG_A_REFLECTION_B: H2O
+WRONG_A_REFLECTION_C: CO2
+WRONG_A_REFLECTION_CORRECT: A
+WRONG_A_REFLECTION_WRONG_MSG: Salt is NaCl (sodium chloride).
+
+WRONG_B_TEACHING: H2O is not sugar. Sugar has a more complex formula. H2O is the formula for water.
+WRONG_B_REFLECTION_Q: What elements make up H2O?
+WRONG_B_REFLECTION_A: Hydrogen and Oxygen
+WRONG_B_REFLECTION_B: Helium and Oxygen
+WRONG_B_REFLECTION_C: Hydrogen and Osmium
+WRONG_B_REFLECTION_CORRECT: A
+WRONG_B_REFLECTION_WRONG_MSG: H2O contains Hydrogen and Oxygen.
+
+WRONG_C_TEACHING: This is correct, you shouldn't see this.
+WRONG_C_REFLECTION_Q: Placeholder question.
+WRONG_C_REFLECTION_A: Placeholder A
+WRONG_C_REFLECTION_B: Placeholder B
+WRONG_C_REFLECTION_C: Placeholder C
+WRONG_C_REFLECTION_CORRECT: A
+WRONG_C_REFLECTION_WRONG_MSG: Placeholder message.
+
+CHECKPOINT 2 - DECISION 3
+TITLE: Checkpoint 2 - Decision 3/4
+QUESTION: Who wrote Romeo and Juliet?
+A. Charles Dickens
+B. William Shakespeare
+C. Jane Austen
+CORRECT: B
+CORRECT_MESSAGE: Correct! William Shakespeare wrote Romeo and Juliet.
+
+WRONG_A_TEACHING: Charles Dickens did not write Romeo and Juliet. He wrote novels like Oliver Twist and A Tale of Two Cities. Shakespeare wrote Romeo and Juliet.
+WRONG_A_REFLECTION_Q: Which of these did Charles Dickens write?
+WRONG_A_REFLECTION_A: Oliver Twist
+WRONG_A_REFLECTION_B: Romeo and Juliet
+WRONG_A_REFLECTION_C: Pride and Prejudice
+WRONG_A_REFLECTION_CORRECT: A
+WRONG_A_REFLECTION_WRONG_MSG: Charles Dickens wrote Oliver Twist.
+
+WRONG_B_TEACHING: This is correct, you shouldn't see this.
+WRONG_B_REFLECTION_Q: Placeholder question.
+WRONG_B_REFLECTION_A: Placeholder A
+WRONG_B_REFLECTION_B: Placeholder B
+WRONG_B_REFLECTION_C: Placeholder C
+WRONG_B_REFLECTION_CORRECT: A
+WRONG_B_REFLECTION_WRONG_MSG: Placeholder message.
+
+WRONG_C_TEACHING: Jane Austen did not write Romeo and Juliet. She wrote novels like Pride and Prejudice. Shakespeare wrote Romeo and Juliet.
+WRONG_C_REFLECTION_Q: Which of these did Jane Austen write?
+WRONG_C_REFLECTION_A: Pride and Prejudice
+WRONG_C_REFLECTION_B: Romeo and Juliet
+WRONG_C_REFLECTION_C: Hamlet
+WRONG_C_REFLECTION_CORRECT: A
+WRONG_C_REFLECTION_WRONG_MSG: Jane Austen wrote Pride and Prejudice.
+
+CHECKPOINT 2 - DECISION 4
+TITLE: Checkpoint 2 - Decision 4/4
+QUESTION: What is the boiling point of water in Celsius?
+A. 50°C
+B. 100°C
+C. 150°C
+CORRECT: B
+CORRECT_MESSAGE: Correct! Water boils at 100°C at standard pressure.
+
+WRONG_A_TEACHING: Water does not boil at 50°C. It boils at 100°C at standard atmospheric pressure.
+WRONG_A_REFLECTION_Q: At what temperature does water freeze in Celsius?
+WRONG_A_REFLECTION_A: 0°C
+WRONG_A_REFLECTION_B: 32°C
+WRONG_A_REFLECTION_C: -10°C
+WRONG_A_REFLECTION_CORRECT: A
+WRONG_A_REFLECTION_WRONG_MSG: Water freezes at 0°C.
+
+WRONG_B_TEACHING: This is correct, you shouldn't see this.
+WRONG_B_REFLECTION_Q: Placeholder question.
+WRONG_B_REFLECTION_A: Placeholder A
+WRONG_B_REFLECTION_B: Placeholder B
+WRONG_B_REFLECTION_C: Placeholder C
+WRONG_B_REFLECTION_CORRECT: A
+WRONG_B_REFLECTION_WRONG_MSG: Placeholder message.
+
+WRONG_C_TEACHING: Water does not boil at 150°C at standard pressure. It boils at 100°C.
+WRONG_C_REFLECTION_Q: What happens to water at temperatures above 100°C?
+WRONG_C_REFLECTION_A: It turns to steam
+WRONG_C_REFLECTION_B: It freezes
+WRONG_C_REFLECTION_C: Nothing
+WRONG_C_REFLECTION_CORRECT: A
+WRONG_C_REFLECTION_WRONG_MSG: Water turns to steam above 100°C.
+
+CHECKPOINT 3 - DECISION 1
+TITLE: Checkpoint 3 - Decision 1/4
+QUESTION: What is the smallest prime number?
+A. 1
+B. 2
+C. 3
+CORRECT: B
+CORRECT_MESSAGE: Correct! 2 is the smallest prime number.
+
+WRONG_A_TEACHING: 1 is not a prime number by mathematical definition. A prime must have exactly two factors. 1 only has one factor (itself).
+WRONG_A_REFLECTION_Q: How many factors does a prime number have?
+WRONG_A_REFLECTION_A: Exactly 2
+WRONG_A_REFLECTION_B: Exactly 1
+WRONG_A_REFLECTION_C: More than 2
+WRONG_A_REFLECTION_CORRECT: A
+WRONG_A_REFLECTION_WRONG_MSG: A prime number has exactly 2 factors: 1 and itself.
+
+WRONG_B_TEACHING: This is correct, you shouldn't see this.
+WRONG_B_REFLECTION_Q: Placeholder question.
+WRONG_B_REFLECTION_A: Placeholder A
+WRONG_B_REFLECTION_B: Placeholder B
+WRONG_B_REFLECTION_C: Placeholder C
+WRONG_B_REFLECTION_CORRECT: A
+WRONG_B_REFLECTION_WRONG_MSG: Placeholder message.
+
+WRONG_C_TEACHING: While 3 is a prime number, 2 is smaller and is also prime. 2 is the smallest and only even prime number.
+WRONG_C_REFLECTION_Q: Is 2 an even or odd number?
+WRONG_C_REFLECTION_A: Even
+WRONG_C_REFLECTION_B: Odd
+WRONG_C_REFLECTION_C: Neither
+WRONG_C_REFLECTION_CORRECT: A
+WRONG_C_REFLECTION_WRONG_MSG: 2 is the only even prime number.
+
+CHECKPOINT 3 - DECISION 2
+TITLE: Checkpoint 3 - Decision 2/4
+QUESTION: What organ pumps blood through the body?
+A. Brain
+B. Lungs
+C. Heart
+CORRECT: C
+CORRECT_MESSAGE: Correct! The heart pumps blood throughout the body.
+
+WRONG_A_TEACHING: The brain does not pump blood. It controls body functions. The heart is responsible for pumping blood.
+WRONG_A_REFLECTION_Q: What is the main function of the brain?
+WRONG_A_REFLECTION_A: Control body functions
+WRONG_A_REFLECTION_B: Pump blood
+WRONG_A_REFLECTION_C: Filter toxins
+WRONG_A_REFLECTION_CORRECT: A
+WRONG_A_REFLECTION_WRONG_MSG: The brain controls body functions.
+
+WRONG_B_TEACHING: The lungs do not pump blood. They exchange oxygen and carbon dioxide. The heart pumps blood.
+WRONG_B_REFLECTION_Q: What do the lungs exchange?
+WRONG_B_REFLECTION_A: Oxygen and carbon dioxide
+WRONG_B_REFLECTION_B: Blood and water
+WRONG_B_REFLECTION_C: Nutrients and waste
+WRONG_B_REFLECTION_CORRECT: A
+WRONG_B_REFLECTION_WRONG_MSG: The lungs exchange oxygen and carbon dioxide.
+
+WRONG_C_TEACHING: This is correct, you shouldn't see this.
+WRONG_C_REFLECTION_Q: Placeholder question.
+WRONG_C_REFLECTION_A: Placeholder A
+WRONG_C_REFLECTION_B: Placeholder B
+WRONG_C_REFLECTION_C: Placeholder C
+WRONG_C_REFLECTION_CORRECT: A
+WRONG_C_REFLECTION_WRONG_MSG: Placeholder message.
+
+CHECKPOINT 3 - DECISION 3
+TITLE: Checkpoint 3 - Decision 3/4
+QUESTION: What is the speed of light approximately?
+A. 300,000 km/s
+B. 150,000 km/s
+C. 500,000 km/s
+CORRECT: A
+CORRECT_MESSAGE: Correct! Light travels at approximately 300,000 km/s.
+
+WRONG_A_TEACHING: This is correct, you shouldn't see this.
+WRONG_A_REFLECTION_Q: Placeholder question.
+WRONG_A_REFLECTION_A: Placeholder A
+WRONG_A_REFLECTION_B: Placeholder B
+WRONG_A_REFLECTION_C: Placeholder C
+WRONG_A_REFLECTION_CORRECT: A
+WRONG_A_REFLECTION_WRONG_MSG: Placeholder message.
+
+WRONG_B_TEACHING: The speed of light is not 150,000 km/s. It's approximately 300,000 km/s or about 186,000 miles per second.
+WRONG_B_REFLECTION_Q: How long does light from the Sun take to reach Earth?
+WRONG_B_REFLECTION_A: About 8 minutes
+WRONG_B_REFLECTION_B: About 1 second
+WRONG_B_REFLECTION_C: About 1 hour
+WRONG_B_REFLECTION_CORRECT: A
+WRONG_B_REFLECTION_WRONG_MSG: Light from the Sun takes about 8 minutes to reach Earth.
+
+WRONG_C_TEACHING: The speed of light is not 500,000 km/s. It's approximately 300,000 km/s. Nothing can travel faster than light.
+WRONG_C_REFLECTION_Q: What is the fastest thing in the universe?
+WRONG_C_REFLECTION_A: Light
+WRONG_C_REFLECTION_B: Sound
+WRONG_C_REFLECTION_C: Rockets
+WRONG_C_REFLECTION_CORRECT: A
+WRONG_C_REFLECTION_WRONG_MSG: Light is the fastest thing in the universe.
+
+CHECKPOINT 3 - DECISION 4
+TITLE: Checkpoint 3 - Decision 4/4
+QUESTION: In what year did World War II end?
+A. 1943
+B. 1945
+C. 1947
+CORRECT: B
+CORRECT_MESSAGE: Correct! World War II ended in 1945.
+
+WRONG_A_TEACHING: World War II did not end in 1943. The war continued until 1945 when Germany and Japan surrendered.
+WRONG_A_REFLECTION_Q: Which countries surrendered in 1945 to end WWII?
+WRONG_A_REFLECTION_A: Germany and Japan
+WRONG_A_REFLECTION_B: France and Britain
+WRONG_A_REFLECTION_C: USA and Russia
+WRONG_A_REFLECTION_CORRECT: A
+WRONG_A_REFLECTION_WRONG_MSG: Germany and Japan surrendered in 1945.
+
+WRONG_B_TEACHING: This is correct, you shouldn't see this.
+WRONG_B_REFLECTION_Q: Placeholder question.
+WRONG_B_REFLECTION_A: Placeholder A
+WRONG_B_REFLECTION_B: Placeholder B
+WRONG_B_REFLECTION_C: Placeholder C
+WRONG_B_REFLECTION_CORRECT: A
+WRONG_B_REFLECTION_WRONG_MSG: Placeholder message.
+
+WRONG_C_TEACHING: World War II ended in 1945, not 1947. Victory in Europe was in May 1945 and Victory over Japan was in September 1945.
+WRONG_C_REFLECTION_Q: In what month did Victory in Europe occur?
+WRONG_C_REFLECTION_A: May
+WRONG_C_REFLECTION_B: December
+WRONG_C_REFLECTION_C: January
+WRONG_C_REFLECTION_CORRECT: A
+WRONG_C_REFLECTION_WRONG_MSG: Victory in Europe (VE Day) was in May 1945.
+
+LETTER_1: K
+LETTER_1_MESSAGE: Great job completing Checkpoint 1! You've unlocked the letter K.
+
+LETTER_2: E
+LETTER_2_MESSAGE: Excellent work on Checkpoint 2! You've unlocked the letter E.
+
+LETTER_3: Y
+LETTER_3_MESSAGE: Amazing! You've completed Checkpoint 3 and unlocked the letter Y.
