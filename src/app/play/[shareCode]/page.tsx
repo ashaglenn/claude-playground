@@ -78,6 +78,7 @@ export default function PlayPage() {
 
   const theme = escapeRoom?.game_content?.theme
   const backgroundImage = escapeRoom?.game_content?.backgroundImage
+  const customBackgrounds = escapeRoom?.game_content?.customThemeBackgrounds
 
   if (loading) {
     return (
@@ -102,18 +103,19 @@ export default function PlayPage() {
 
   // Show name entry form
   const isClassicTheme = !theme || theme === 'classic'
+  const nameEntryBackground = customBackgrounds?.nameEntry || customBackgrounds?.default || backgroundImage
 
   if (!nameSubmitted) {
     return (
-      <ThemeProvider initialTheme={theme}>
+      <ThemeProvider initialTheme={theme} customBackgrounds={customBackgrounds}>
         <div
           className="flex min-h-screen flex-col items-center justify-center bg-cover bg-center bg-fixed p-8"
           style={{
             backgroundColor: 'var(--theme-background)',
-            backgroundImage: backgroundImage
+            backgroundImage: nameEntryBackground
               ? isClassicTheme
-                ? `url(${backgroundImage})`
-                : `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${backgroundImage})`
+                ? `url(${nameEntryBackground})`
+                : `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${nameEntryBackground})`
               : undefined,
             color: 'var(--theme-text)',
             fontFamily: 'var(--theme-font-body)',
