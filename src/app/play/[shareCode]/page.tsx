@@ -123,12 +123,12 @@ export default function PlayPage() {
         >
           <div className="w-full max-w-md text-center">
             <h1
-              className="mb-2 text-3xl font-bold"
+              className={`mb-2 text-3xl font-bold ${isClassicTheme && nameEntryBackground ? 'text-highlight' : ''}`}
               style={{ fontFamily: 'var(--theme-font-heading)' }}
             >
               {escapeRoom.title}
             </h1>
-            <p className="mb-8" style={{ color: 'var(--theme-text-muted)' }}>
+            <p className={`mb-8 ${isClassicTheme && nameEntryBackground ? 'text-highlight' : ''}`} style={{ color: 'var(--theme-text-muted)' }}>
               Enter your name to begin
             </p>
 

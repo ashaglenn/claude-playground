@@ -2,11 +2,15 @@
 
 import { useState } from 'react'
 import { useGame } from '@/context/GameContext'
+import { useTheme } from '@/context/ThemeContext'
 import { AnswerKey } from '@/lib/types'
 import { shuffleArray } from '@/lib/parser'
 
 export default function ReflectionScreen() {
   const { state, dispatch, getCurrentQuestion } = useGame()
+  const { themeId, getBackgroundForScreen } = useTheme()
+  const isClassicTheme = themeId === 'classic'
+  const hasBackground = !!getBackgroundForScreen('reflection')
   const [pickedWrongAnswer, setPickedWrongAnswer] = useState<AnswerKey | null>(null)
   const [showCorrectPopup, setShowCorrectPopup] = useState(false)
   const [reflectionOrder] = useState<AnswerKey[]>(() => shuffleArray(['A', 'B', 'C'] as AnswerKey[]))
@@ -98,12 +102,12 @@ export default function ReflectionScreen() {
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
       <div className="w-full max-w-2xl">
         <h2
-          className="text-xl font-semibold mb-4"
+          className={`text-xl font-semibold mb-4 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
           style={{ color: 'var(--theme-text-muted)', fontFamily: 'var(--theme-font-heading)' }}
         >
           Reflection Question
         </h2>
-        <p className="text-xl mb-6">{wrongAnswer.reflectionQuestion}</p>
+        <p className={`text-xl mb-6 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}>{wrongAnswer.reflectionQuestion}</p>
 
         <div className="flex flex-col gap-3">
           {reflectionOrder.map((originalKey, index) => {

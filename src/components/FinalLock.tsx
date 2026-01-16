@@ -2,9 +2,13 @@
 
 import { useState } from 'react'
 import { useGame } from '@/context/GameContext'
+import { useTheme } from '@/context/ThemeContext'
 
 export default function FinalLock() {
   const { state, dispatch } = useGame()
+  const { themeId, getBackgroundForScreen } = useTheme()
+  const isClassicTheme = themeId === 'classic'
+  const hasBackground = !!getBackgroundForScreen('final-lock')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [shake, setShake] = useState(false)
   const [filledLetters, setFilledLetters] = useState<(string | null)[]>([])
@@ -107,19 +111,19 @@ export default function FinalLock() {
       <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
         <button
           onClick={handleBackToHub}
-          className="absolute top-4 left-4 text-sm hover:opacity-70"
+          className={`absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
           style={{ color: 'var(--theme-text-muted)' }}
         >
           ← Back to Hub
         </button>
 
         <h2
-          className="text-2xl font-bold"
+          className={`text-2xl font-bold ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
           style={{ fontFamily: 'var(--theme-font-heading)' }}
         >
           Final Lock
         </h2>
-        <p style={{ color: 'var(--theme-text-muted)' }}>
+        <p className={isClassicTheme && hasBackground ? 'text-highlight' : ''} style={{ color: 'var(--theme-text-muted)' }}>
           Click the letters in alphabetical order to escape!
         </p>
 
@@ -147,12 +151,12 @@ export default function FinalLock() {
         </div>
 
         {errorMessage && (
-          <p className="font-medium" style={{ color: 'var(--theme-error)' }}>
+          <p className={`font-medium ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`} style={{ color: 'var(--theme-error)' }}>
             {errorMessage}
           </p>
         )}
 
-        <p className="mt-4 text-sm" style={{ color: 'var(--theme-text-muted)' }}>
+        <p className={`mt-4 text-sm ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`} style={{ color: 'var(--theme-text-muted)' }}>
           Clicked: {clickedLetters.length > 0 ? clickedLetters.join(' → ') : 'None'}
         </p>
       </div>
@@ -166,21 +170,21 @@ export default function FinalLock() {
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
       <button
         onClick={handleBackToHub}
-        className="absolute top-4 left-4 text-sm hover:opacity-70"
+        className={`absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
         style={{ color: 'var(--theme-text-muted)' }}
       >
         ← Back to Hub
       </button>
 
       <h2
-        className="text-2xl font-bold text-center"
+        className={`text-2xl font-bold text-center ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
         style={{ fontFamily: 'var(--theme-font-heading)' }}
       >
         Final Challenge
       </h2>
 
       <p
-        className="text-lg text-center max-w-md"
+        className={`text-lg text-center max-w-md ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
         style={{ color: 'var(--theme-text-muted)' }}
       >
         {finalClue}
@@ -222,13 +226,13 @@ export default function FinalLock() {
       </div>
 
       {errorMessage && (
-        <p className="font-medium" style={{ color: 'var(--theme-error)' }}>
+        <p className={`font-medium ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`} style={{ color: 'var(--theme-error)' }}>
           {errorMessage}
         </p>
       )}
 
       {selectedIndex !== null && (
-        <p className="text-sm" style={{ color: 'var(--theme-text-muted)' }}>
+        <p className={`text-sm ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`} style={{ color: 'var(--theme-text-muted)' }}>
           Select a letter for position {selectedIndex + 1}
         </p>
       )}
@@ -251,7 +255,7 @@ export default function FinalLock() {
         ))}
       </div>
 
-      <p className="text-sm text-center" style={{ color: 'var(--theme-text-muted)' }}>
+      <p className={`text-sm text-center ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`} style={{ color: 'var(--theme-text-muted)' }}>
         Hint: You&apos;ve earned {earnedLetters.length} letter{earnedLetters.length !== 1 ? 's' : ''} from completing checkpoints!
       </p>
     </div>

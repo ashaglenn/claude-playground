@@ -1,9 +1,13 @@
 'use client'
 
 import { useGame } from '@/context/GameContext'
+import { useTheme } from '@/context/ThemeContext'
 
 export default function LetterReveal() {
   const { state, dispatch } = useGame()
+  const { themeId, getBackgroundForScreen } = useTheme()
+  const isClassicTheme = themeId === 'classic'
+  const hasBackground = !!getBackgroundForScreen('letter-reveal')
 
   const latestLetter = state.unlockedLetters[state.unlockedLetters.length - 1]
 
@@ -12,7 +16,7 @@ export default function LetterReveal() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
       <h2
-        className="text-xl font-semibold"
+        className={`text-xl font-semibold ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
         style={{ color: 'var(--theme-text-muted)', fontFamily: 'var(--theme-font-heading)' }}
       >
         Checkpoint Complete!
@@ -30,9 +34,9 @@ export default function LetterReveal() {
         </span>
       </div>
 
-      <p className="max-w-md text-center text-lg">{latestLetter.message}</p>
+      <p className={`max-w-md text-center text-lg ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}>{latestLetter.message}</p>
 
-      <div className="mt-4 flex gap-2">
+      <div className={`mt-4 flex gap-2 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}>
         <span className="text-sm" style={{ color: 'var(--theme-text-muted)' }}>
           Letters unlocked:
         </span>

@@ -31,7 +31,7 @@ export const themes: Record<string, Theme> = {
       background: '#ffffff',
       backgroundSecondary: '#f5f5f5',
       text: '#1a1a1a',
-      textMuted: '#6b7280',
+      textMuted: '#1a1a1a',
       primary: '#1a1a1a',
       primaryHover: '#374151',
       primaryText: '#ffffff',

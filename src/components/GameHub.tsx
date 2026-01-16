@@ -1,9 +1,13 @@
 'use client'
 
 import { useGame } from '@/context/GameContext'
+import { useTheme } from '@/context/ThemeContext'
 
 export default function GameHub() {
   const { state, dispatch, isCheckpointComplete, isCheckpointUnlocked, allCheckpointsComplete } = useGame()
+  const { themeId, getBackgroundForScreen } = useTheme()
+  const isClassicTheme = themeId === 'classic'
+  const hasBackground = !!getBackgroundForScreen('hub')
 
   const handleCheckpointClick = (checkpoint: number) => {
     if (!isCheckpointUnlocked(checkpoint)) return
@@ -34,10 +38,10 @@ export default function GameHub() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-8 p-8">
-      <h1 className="text-3xl font-bold" style={{ fontFamily: 'var(--theme-font-heading)' }}>
+      <h1 className={`text-3xl font-bold ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`} style={{ fontFamily: 'var(--theme-font-heading)' }}>
         Game Hub
       </h1>
-      <p style={{ color: 'var(--theme-text-muted)' }}>
+      <p className={isClassicTheme && hasBackground ? 'text-highlight' : ''} style={{ color: 'var(--theme-text-muted)' }}>
         Complete all checkpoints to unlock the final lock
       </p>
 
@@ -111,7 +115,7 @@ export default function GameHub() {
 
       <button
         onClick={handleNewGame}
-        className="mt-4 text-sm underline"
+        className={`mt-4 text-sm underline ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
         style={{ color: 'var(--theme-text-muted)' }}
       >
         Start New Game
