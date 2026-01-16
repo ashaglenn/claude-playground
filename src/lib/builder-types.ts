@@ -40,6 +40,8 @@ export interface BuilderState {
   customThemeId?: string
   customThemeBackgrounds?: CustomThemeBackgrounds
   checkpoints: CheckpointData[]
+  finalWord: string
+  finalClue: string
 }
 
 // Create an empty checkpoint
@@ -84,6 +86,8 @@ export function createEmptyBuilderState(numCheckpoints: number = 3, questionsPer
     theme: 'classic',
     welcomeMessage: '',
     checkpoints: Array.from({ length: numCheckpoints }, (_, i) => createEmptyCheckpoint(i + 1, questionsPerCheckpoint)),
+    finalWord: '',
+    finalClue: '',
   }
 }
 
@@ -147,6 +151,8 @@ export function builderStateToGameContent(state: BuilderState): GameContent {
     welcomeMessage: state.welcomeMessage || undefined,
     customThemeId: state.customThemeId,
     customThemeBackgrounds: state.customThemeBackgrounds,
+    finalWord: state.finalWord || undefined,
+    finalClue: state.finalClue || undefined,
   }
 }
 
@@ -221,5 +227,8 @@ export function gameContentToBuilderState(content: GameContent, title: string): 
     }
   })
 
-  return { title, theme, backgroundImage, welcomeMessage, customThemeId, customThemeBackgrounds, checkpoints }
+  const finalWord = content.finalWord || ''
+  const finalClue = content.finalClue || ''
+
+  return { title, theme, backgroundImage, welcomeMessage, customThemeId, customThemeBackgrounds, checkpoints, finalWord, finalClue }
 }

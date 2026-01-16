@@ -43,6 +43,8 @@ export interface GameContent {
   welcomeMessage?: string
   customThemeId?: string
   customThemeBackgrounds?: CustomThemeBackgrounds
+  finalWord?: string
+  finalClue?: string
 }
 
 export type AnswerKey = 'A' | 'B' | 'C'

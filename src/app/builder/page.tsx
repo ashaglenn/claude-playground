@@ -52,6 +52,14 @@ export default function BuilderPage() {
     setState(prev => ({ ...prev, welcomeMessage }))
   }
 
+  const updateFinalWord = (finalWord: string) => {
+    setState(prev => ({ ...prev, finalWord: finalWord.toUpperCase() }))
+  }
+
+  const updateFinalClue = (finalClue: string) => {
+    setState(prev => ({ ...prev, finalClue }))
+  }
+
   const updateCheckpoint = (index: number, data: CheckpointData) => {
     setState(prev => {
       const newCheckpoints = [...prev.checkpoints]
@@ -220,6 +228,44 @@ export default function BuilderPage() {
             className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900"
             rows={3}
           />
+        </div>
+
+        <div className="mt-4 rounded-lg border-2 border-purple-200 bg-purple-50 p-4">
+          <h3 className="mb-1 text-sm font-medium text-purple-800">
+            Final Challenge (Word Puzzle)
+          </h3>
+          <p className="mb-3 text-xs text-purple-600">
+            Students will solve a word puzzle at the end. The letters they earn from checkpoints will be pre-filled.
+          </p>
+          <div className="space-y-3">
+            <div>
+              <label className="mb-1 block text-xs font-medium text-gray-700">
+                Final Answer Word
+              </label>
+              <input
+                type="text"
+                value={state.finalWord}
+                onChange={(e) => updateFinalWord(e.target.value)}
+                placeholder="e.g., AORTA"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 uppercase text-gray-900"
+              />
+              <p className="mt-1 text-xs text-gray-500">
+                Make sure checkpoint letters are part of this word. Currently: {state.checkpoints.map(cp => cp.letter || '?').join(', ')}
+              </p>
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-medium text-gray-700">
+                Clue / Question
+              </label>
+              <textarea
+                value={state.finalClue}
+                onChange={(e) => updateFinalClue(e.target.value)}
+                placeholder="e.g., What is the largest artery in the human body?"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900"
+                rows={2}
+              />
+            </div>
+          </div>
         </div>
 
         <div className="mt-6 space-y-6">
