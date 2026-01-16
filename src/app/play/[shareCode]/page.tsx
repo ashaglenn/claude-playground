@@ -121,9 +121,9 @@ export default function PlayPage() {
             fontFamily: 'var(--theme-font-body)',
           }}
         >
-          <div className="w-full max-w-md text-center">
+          <div className="w-full max-w-md flex flex-col items-center text-center">
             <h1
-              className={`mb-2 text-3xl font-bold ${isClassicTheme && nameEntryBackground ? 'text-highlight' : ''}`}
+              className={`mb-4 text-3xl font-bold ${isClassicTheme && nameEntryBackground ? 'text-highlight' : ''}`}
               style={{ fontFamily: 'var(--theme-font-heading)' }}
             >
               {escapeRoom.title}
