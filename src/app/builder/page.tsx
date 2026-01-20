@@ -303,15 +303,22 @@ export default function BuilderPage() {
         </div>
 
         <div className="mt-6 space-y-6">
-          {state.checkpoints.map((checkpoint, index) => (
-            <CheckpointSection
-              key={index}
-              checkpointNumber={index + 1}
-              data={checkpoint}
-              onChange={(data) => updateCheckpoint(index, data)}
-              onRemove={state.checkpoints.length > 1 ? () => removeCheckpoint(index) : undefined}
-            />
-          ))}
+          {state.checkpoints.map((checkpoint, index) => {
+            // Calculate the starting question number for this checkpoint
+            const questionStartNumber = state.checkpoints
+              .slice(0, index)
+              .reduce((sum, cp) => sum + cp.questions.length, 0) + 1
+            return (
+              <CheckpointSection
+                key={index}
+                checkpointNumber={index + 1}
+                questionStartNumber={questionStartNumber}
+                data={checkpoint}
+                onChange={(data) => updateCheckpoint(index, data)}
+                onRemove={state.checkpoints.length > 1 ? () => removeCheckpoint(index) : undefined}
+              />
+            )
+          })}
         </div>
 
         <div className="mt-4 flex justify-center">

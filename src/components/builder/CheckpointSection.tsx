@@ -1,10 +1,11 @@
 'use client'
 
-import { CheckpointData, QuestionData } from '@/lib/builder-types'
+import { CheckpointData, QuestionData, createEmptyMultipleChoiceQuestion } from '@/lib/builder-types'
 import QuestionEditor from './QuestionEditor'
 
 interface CheckpointSectionProps {
   checkpointNumber: number
+  questionStartNumber: number  // Global question number for first question in this checkpoint
   data: CheckpointData
   onChange: (data: CheckpointData) => void
   onRemove?: () => void
@@ -12,6 +13,7 @@ interface CheckpointSectionProps {
 
 export default function CheckpointSection({
   checkpointNumber,
+  questionStartNumber,
   data,
   onChange,
   onRemove,
@@ -19,6 +21,18 @@ export default function CheckpointSection({
   const updateQuestion = (index: number, questionData: QuestionData) => {
     const newQuestions = [...data.questions]
     newQuestions[index] = questionData
+    onChange({ ...data, questions: newQuestions })
+  }
+
+  const addQuestion = () => {
+    const newQuestionNumber = data.questions.length + 1
+    const newQuestion = createEmptyMultipleChoiceQuestion(checkpointNumber, newQuestionNumber)
+    onChange({ ...data, questions: [...data.questions, newQuestion] })
+  }
+
+  const removeQuestion = (index: number) => {
+    if (data.questions.length <= 1) return // Keep at least one question
+    const newQuestions = data.questions.filter((_, i) => i !== index)
     onChange({ ...data, questions: newQuestions })
   }
 
@@ -77,14 +91,35 @@ export default function CheckpointSection({
 
       <div className="space-y-3">
         {data.questions.map((question, index) => (
-          <QuestionEditor
-            key={index}
-            questionNumber={(checkpointNumber - 1) * data.questions.length + index + 1}
-            checkpointNumber={checkpointNumber}
-            data={question}
-            onChange={(q) => updateQuestion(index, q)}
-          />
+          <div key={index} className="relative">
+            <QuestionEditor
+              questionNumber={questionStartNumber + index}
+              checkpointNumber={checkpointNumber}
+              data={question}
+              onChange={(q) => updateQuestion(index, q)}
+            />
+            {data.questions.length > 1 && (
+              <button
+                type="button"
+                onClick={() => removeQuestion(index)}
+                className="absolute -right-2 -top-2 rounded-full bg-red-500 p-1 text-white hover:bg-red-600 shadow-sm"
+                title="Remove question"
+              >
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
         ))}
+
+        <button
+          type="button"
+          onClick={addQuestion}
+          className="w-full rounded-lg border-2 border-dashed border-gray-300 py-3 text-sm text-gray-500 hover:border-gray-400 hover:text-gray-600 transition-colors"
+        >
+          + Add Question
+        </button>
       </div>
     </div>
   )
