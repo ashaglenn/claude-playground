@@ -79,7 +79,8 @@ export default function CheckpointSection({
         {data.questions.map((question, index) => (
           <QuestionEditor
             key={index}
-            questionNumber={(checkpointNumber - 1) * 4 + index + 1}
+            questionNumber={(checkpointNumber - 1) * data.questions.length + index + 1}
+            checkpointNumber={checkpointNumber}
             data={question}
             onChange={(q) => updateQuestion(index, q)}
           />

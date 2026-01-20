@@ -2,6 +2,7 @@
 
 import { useGame } from '@/context/GameContext'
 import { useTheme } from '@/context/ThemeContext'
+import { isMultipleChoiceQuestion } from '@/lib/types'
 
 export default function TeachingScreen() {
   const { state, dispatch, getCurrentQuestion } = useGame()
@@ -10,7 +11,8 @@ export default function TeachingScreen() {
   const hasBackground = !!getBackgroundForScreen('teaching')
   const question = getCurrentQuestion()
 
-  if (!question || !state.currentWrongAnswer) return null
+  // Teaching screen only applies to multiple choice questions
+  if (!question || !state.currentWrongAnswer || !isMultipleChoiceQuestion(question)) return null
 
   const wrongAnswer = question.answers[state.currentWrongAnswer]
 

@@ -10,6 +10,10 @@ import {
   gameContentToBuilderState,
   builderStateToGameContent,
   createEmptyCheckpoint,
+  isMultipleChoiceQuestionData,
+  isHotspotQuestionData,
+  isDragDropQuestionData,
+  isFillBlankQuestionData,
 } from '@/lib/builder-types'
 import { GameContent, CustomThemeBackgrounds } from '@/lib/types'
 import CheckpointSection from '@/components/builder/CheckpointSection'
@@ -131,18 +135,49 @@ export default function EditBuilderPage() {
           return `Please enter the question text for Question ${qNum}`
         }
 
-        if (!question.answers.A.text.trim() || !question.answers.B.text.trim() || !question.answers.C.text.trim()) {
-          return `Please enter all answer options for Question ${qNum}`
-        }
-
         if (!question.correctMessage.trim()) {
           return `Please enter a correct message for Question ${qNum}`
         }
 
-        const wrongAnswers = ['A', 'B', 'C'].filter(k => k !== question.correct) as ('A' | 'B' | 'C')[]
-        for (const key of wrongAnswers) {
-          if (!question.answers[key].teaching.trim()) {
-            return `Please enter teaching text for wrong answer ${key} in Question ${qNum}`
+        // Type-specific validation
+        if (isMultipleChoiceQuestionData(question)) {
+          if (!question.answers.A.text.trim() || !question.answers.B.text.trim() || !question.answers.C.text.trim()) {
+            return `Please enter all answer options for Question ${qNum}`
+          }
+
+          const wrongAnswers = ['A', 'B', 'C'].filter(k => k !== question.correct) as ('A' | 'B' | 'C')[]
+          for (const key of wrongAnswers) {
+            if (!question.answers[key].teaching.trim()) {
+              return `Please enter teaching text for wrong answer ${key} in Question ${qNum}`
+            }
+          }
+        } else if (isHotspotQuestionData(question)) {
+          if (!question.imageUrl?.trim()) {
+            return `Please upload an image for hotspot Question ${qNum}`
+          }
+          if (!question.hotspotRegion) {
+            return `Please draw a hotspot region for Question ${qNum}`
+          }
+        } else if (isDragDropQuestionData(question)) {
+          if (!question.sentence.trim()) {
+            return `Please enter a sentence for drag-drop Question ${qNum}`
+          }
+          const blankCount = (question.sentence.match(/\[BLANK\]/g) || []).length
+          if (blankCount === 0) {
+            return `Please add at least one [BLANK] placeholder in Question ${qNum}`
+          }
+          if (question.correctWords.length !== blankCount) {
+            return `Question ${qNum} has ${blankCount} blank(s) but ${question.correctWords.length} correct word(s)`
+          }
+        } else if (isFillBlankQuestionData(question)) {
+          if (!question.sentence.trim()) {
+            return `Please enter a sentence for fill-blank Question ${qNum}`
+          }
+          if (!question.sentence.includes('[BLANK]')) {
+            return `Please add a [BLANK] placeholder in Question ${qNum}`
+          }
+          if (!question.correctAnswer.trim()) {
+            return `Please enter the correct answer for Question ${qNum}`
           }
         }
       }

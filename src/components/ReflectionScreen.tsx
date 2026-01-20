@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useGame } from '@/context/GameContext'
 import { useTheme } from '@/context/ThemeContext'
-import { AnswerKey } from '@/lib/types'
+import { AnswerKey, isMultipleChoiceQuestion } from '@/lib/types'
 import { shuffleArray } from '@/lib/parser'
 
 export default function ReflectionScreen() {
@@ -17,7 +17,8 @@ export default function ReflectionScreen() {
 
   const question = getCurrentQuestion()
 
-  if (!question || !state.currentWrongAnswer) return null
+  // Reflection screen only applies to multiple choice questions
+  if (!question || !state.currentWrongAnswer || !isMultipleChoiceQuestion(question)) return null
 
   const wrongAnswer = question.answers[state.currentWrongAnswer]
 
