@@ -7,9 +7,10 @@ interface ImageUploadProps {
   imageUrl?: string
   onImageChange: (url: string | undefined) => void
   questionId: string
+  label?: string | null  // Pass null to hide label entirely
 }
 
-export default function ImageUpload({ imageUrl, onImageChange, questionId }: ImageUploadProps) {
+export default function ImageUpload({ imageUrl, onImageChange, questionId, label = 'Question Image (optional)' }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -77,9 +78,11 @@ export default function ImageUpload({ imageUrl, onImageChange, questionId }: Ima
 
   return (
     <div>
-      <label className="mb-1 block text-sm font-medium text-gray-700">
-        Question Image (optional)
-      </label>
+      {label && (
+        <label className="mb-1 block text-sm font-medium text-gray-700">
+          {label}
+        </label>
+      )}
 
       {imageUrl ? (
         <div className="relative inline-block">

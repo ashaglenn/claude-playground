@@ -381,11 +381,11 @@ function HotspotEditorInline({
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Image (required)</label>
         <ImageUpload
           imageUrl={data.imageUrl}
           onImageChange={(url) => updateField('imageUrl', url)}
           questionId={`q${questionNumber}-main`}
+          label="Image (required)"
         />
       </div>
 
@@ -436,11 +436,11 @@ function HotspotEditorInline({
       )}
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Labeled Image (optional)</label>
         <ImageUpload
           imageUrl={data.labeledImageUrl}
           onImageChange={(url) => updateField('labeledImageUrl', url)}
           questionId={`q${questionNumber}-labeled`}
+          label="Labeled Image (optional)"
         />
       </div>
 
