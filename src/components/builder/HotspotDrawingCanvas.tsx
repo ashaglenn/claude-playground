@@ -254,7 +254,7 @@ export default function HotspotDrawingCanvas({
           ref={canvasRef}
           width={imageSize.width}
           height={imageSize.height}
-          className={`absolute top-0 left-0 rounded-lg ${isDrawing ? 'cursor-crosshair' : 'cursor-default'}`}
+          className={`absolute top-0 left-0 rounded-lg ${isDrawing ? 'cursor-crosshair' : 'pointer-events-none'}`}
           style={{ width: imageSize.width, height: imageSize.height }}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
