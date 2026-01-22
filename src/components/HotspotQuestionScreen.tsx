@@ -29,7 +29,8 @@ export default function HotspotQuestionScreen({ question }: HotspotQuestionScree
       setImageLoaded(true)
       const container = containerRef.current
       if (container) {
-        const maxWidth = Math.min(img.naturalWidth, container.clientWidth, 600)
+        // Bigger image - increased max width to 800px
+        const maxWidth = Math.min(img.naturalWidth, container.clientWidth, 800)
         const ratio = maxWidth / img.naturalWidth
         const displayHeight = img.naturalHeight * ratio
         setImageSize({ width: maxWidth, height: displayHeight })
@@ -187,13 +188,13 @@ export default function HotspotQuestionScreen({ question }: HotspotQuestionScree
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
       <button
         onClick={handleBackToHub}
-        className={`absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
+        className={`absolute top-4 left-4 text-sm cursor-pointer hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
         style={{ color: 'var(--theme-text-muted)' }}
       >
         ← Back to Hub
       </button>
 
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-4xl text-center">
         <h2
           className={`text-xl font-semibold mb-4 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
           style={{ fontFamily: 'var(--theme-font-heading)' }}
@@ -205,29 +206,34 @@ export default function HotspotQuestionScreen({ question }: HotspotQuestionScree
           {question.question}
         </p>
 
-        {/* Image with click detection */}
-        <div ref={containerRef} className="relative w-full mb-4">
+        {/* Image with click detection - centered */}
+        <div ref={containerRef} className="relative w-full mb-4 flex justify-center">
           {showIncorrect && question.labeledImageUrl ? (
             // Show labeled image when incorrect
             <img
               src={question.labeledImageUrl}
               alt="Labeled answer"
-              className="w-full rounded-lg max-h-96 object-contain cursor-pointer"
-              style={{ borderColor: 'var(--theme-border)', borderWidth: '1px' }}
+              className="rounded-lg object-contain cursor-pointer"
+              style={{
+                borderColor: 'var(--theme-border)',
+                borderWidth: '1px',
+                maxHeight: '500px',
+              }}
               onClick={handleImageClick}
             />
           ) : (
             // Show main image with canvas overlay
-            <>
+            <div className="relative inline-block">
               <img
                 src={question.imageUrl}
                 alt="Click to answer"
-                className="w-full rounded-lg max-h-96 object-contain"
+                className="rounded-lg object-contain cursor-pointer"
                 style={{
                   borderColor: 'var(--theme-border)',
                   borderWidth: '1px',
                   width: imageSize.width || 'auto',
                   height: imageSize.height || 'auto',
+                  maxHeight: '500px',
                 }}
               />
               {imageLoaded && (
@@ -240,24 +246,19 @@ export default function HotspotQuestionScreen({ question }: HotspotQuestionScree
                   onClick={handleImageClick}
                 />
               )}
-            </>
+            </div>
           )}
         </div>
 
-        {/* Incorrect feedback */}
+        {/* Incorrect feedback - centered with white highlight */}
         {showIncorrect && (
-          <div
-            className="mb-4 p-4 rounded-lg"
-            style={{
-              backgroundColor: 'rgba(239, 68, 68, 0.1)',
-            }}
-          >
-            <p className="mb-3" style={{ color: 'var(--theme-text)' }}>
+          <div className="mb-4 flex flex-col items-center gap-3">
+            <p className={`text-highlight ${isClassicTheme && hasBackground ? '' : 'text-highlight'}`}>
               {question.incorrectMessage || 'Not quite. The correct area is highlighted above.'}
             </p>
             <button
               onClick={handleTryAgain}
-              className="rounded-lg px-4 py-2 text-sm font-medium transition-colors"
+              className="rounded-lg px-4 py-2 text-sm font-medium cursor-pointer transition-colors"
               style={{
                 backgroundColor: 'var(--theme-primary)',
                 color: 'var(--theme-primary-text)',
@@ -270,7 +271,7 @@ export default function HotspotQuestionScreen({ question }: HotspotQuestionScree
 
         {!showIncorrect && (
           <p
-            className="text-sm text-center"
+            className={`text-sm ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
             style={{ color: 'var(--theme-text-muted)' }}
           >
             Click on the image to select your answer
