@@ -15,6 +15,7 @@ import EscapedScreen from './EscapedScreen'
 
 interface StudentGameProps {
   gameContent: GameContent
+  gameId: string
   onComplete: () => void
 }
 
@@ -49,7 +50,7 @@ function GameScreens({ onComplete }: { onComplete: () => void }) {
   }
 }
 
-function GameLoader({ gameContent, onComplete }: StudentGameProps) {
+function GameLoader({ gameContent, onComplete }: { gameContent: GameContent; onComplete: () => void }) {
   const { state, dispatch } = useGame()
 
   useEffect(() => {
@@ -70,7 +71,7 @@ function GameLoader({ gameContent, onComplete }: StudentGameProps) {
   return <GameScreens onComplete={onComplete} />
 }
 
-function GameContainer({ gameContent, onComplete }: StudentGameProps) {
+function GameContainer({ gameContent, gameId, onComplete }: StudentGameProps) {
   const { state } = useGame()
   const { getBackgroundForScreen } = useTheme()
 
@@ -108,14 +109,14 @@ function GameContainer({ gameContent, onComplete }: StudentGameProps) {
   )
 }
 
-export default function StudentGame({ gameContent, onComplete }: StudentGameProps) {
+export default function StudentGame({ gameContent, gameId, onComplete }: StudentGameProps) {
   return (
     <ThemeProvider
       initialTheme={gameContent.theme}
       customBackgrounds={gameContent.customThemeBackgrounds}
     >
-      <GameProvider>
-        <GameContainer gameContent={gameContent} onComplete={onComplete} />
+      <GameProvider gameId={gameId}>
+        <GameContainer gameContent={gameContent} gameId={gameId} onComplete={onComplete} />
       </GameProvider>
     </ThemeProvider>
   )

@@ -4,7 +4,7 @@ import React, { createContext, useContext, useReducer, useEffect, ReactNode } fr
 import { GameState, GameContent, AnswerKey, CheckpointLetter, Screen } from '@/lib/types'
 import { generateAnswerOrders } from '@/lib/parser'
 
-const STORAGE_KEY = 'escape-room-state'
+const STORAGE_KEY_PREFIX = 'escape-room-state-'
 
 type Action =
   | { type: 'LOAD_GAME'; content: GameContent }
@@ -198,11 +198,19 @@ function getQuestion(state: GameState) {
 
 const GameContext = createContext<GameContextValue | null>(null)
 
-export function GameProvider({ children }: { children: ReactNode }) {
+interface GameProviderProps {
+  children: ReactNode
+  gameId?: string
+}
+
+export function GameProvider({ children, gameId }: GameProviderProps) {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const storageKey = gameId ? `${STORAGE_KEY_PREFIX}${gameId}` : null
 
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
+    if (!storageKey) return
+
+    const saved = localStorage.getItem(storageKey)
     if (saved) {
       try {
         const parsed = JSON.parse(saved)
@@ -211,13 +219,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
         // Invalid saved state, start fresh
       }
     }
-  }, [])
+  }, [storageKey])
 
   useEffect(() => {
-    if (state.gameContent) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+    if (storageKey && state.gameContent) {
+      localStorage.setItem(storageKey, JSON.stringify(state))
     }
-  }, [state])
+  }, [state, storageKey])
 
   const value: GameContextValue = {
     state,

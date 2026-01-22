@@ -168,6 +168,7 @@ export default function PlayPage() {
   return (
     <StudentGame
       gameContent={escapeRoom.game_content}
+      gameId={escapeRoom.id}
       onComplete={handleGameComplete}
     />
   )
