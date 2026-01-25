@@ -147,3 +147,37 @@ export interface GameState {
   answerOrder: Record<number, AnswerKey[]>
   lockClickOrder: string[]
 }
+
+// Activity type for distinguishing between escape rooms and quizzes
+export type ActivityType = 'escape_room' | 'quiz'
+
+// Quiz-specific content (simpler than GameContent - no letters/finalWord)
+export interface QuizContent {
+  questions: Question[]
+  theme?: string
+  backgroundImage?: string
+  welcomeMessage?: string
+  customThemeId?: string
+  customThemeBackgrounds?: CustomThemeBackgrounds
+}
+
+// Quiz screen types
+export type QuizScreen = 'start' | 'welcome' | 'question' | 'feedback' | 'completed'
+
+// Quiz answer record
+export interface QuizAnswer {
+  questionId: number
+  correct: boolean
+  selectedAnswer?: string
+}
+
+// Quiz runtime state
+export interface QuizState {
+  currentScreen: QuizScreen
+  quizContent: QuizContent | null
+  currentQuestionIndex: number
+  answers: QuizAnswer[]
+  lastAnswerCorrect: boolean | null
+  lastCorrectAnswer: string | null
+  answerOrder: Record<number, AnswerKey[]>
+}

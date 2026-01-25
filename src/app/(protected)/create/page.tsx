@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase'
 import { parseGameFile } from '@/lib/parser'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { ActivityType } from '@/lib/types'
 
 function generateShareCode(): string {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
@@ -16,7 +17,8 @@ function generateShareCode(): string {
 }
 
 export default function CreatePage() {
-  const [mode, setMode] = useState<'choose' | 'upload'>('choose')
+  const [mode, setMode] = useState<'activity-type' | 'choose' | 'upload'>('activity-type')
+  const [activityType, setActivityType] = useState<ActivityType>('escape_room')
   const [title, setTitle] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -87,8 +89,8 @@ export default function CreatePage() {
     }
   }
 
-  // Choose mode screen
-  if (mode === 'choose') {
+  // Activity type selection screen
+  if (mode === 'activity-type') {
     return (
       <div className="min-h-screen p-8">
         <div className="mx-auto max-w-2xl">
@@ -98,6 +100,58 @@ export default function CreatePage() {
           >
             ← Back to Dashboard
           </Link>
+
+          <h1 className="mb-2 text-3xl font-bold">Create New Activity</h1>
+          <p className="mb-8 text-gray-600">What type of activity would you like to create?</p>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <button
+              onClick={() => {
+                setActivityType('escape_room')
+                setMode('choose')
+              }}
+              className="rounded-xl border-2 border-gray-200 bg-white p-6 text-left transition-all hover:border-indigo-500 hover:shadow-lg"
+            >
+              <div className="mb-3 text-4xl">🔐</div>
+              <h2 className="mb-2 text-xl font-semibold">Escape Room</h2>
+              <p className="text-sm text-gray-600">
+                A multi-checkpoint adventure where students earn letters to solve a final puzzle. Includes teaching moments and reflection questions for wrong answers.
+              </p>
+              <div className="mt-4 text-sm font-medium text-indigo-600">
+                Best for in-depth learning →
+              </div>
+            </button>
+
+            <button
+              onClick={() => router.push('/quiz-builder')}
+              className="rounded-xl border-2 border-gray-200 bg-white p-6 text-left transition-all hover:border-blue-500 hover:shadow-lg"
+            >
+              <div className="mb-3 text-4xl">📋</div>
+              <h2 className="mb-2 text-xl font-semibold">Quiz</h2>
+              <p className="text-sm text-gray-600">
+                A simple question flow: answer → feedback → next question → results. Quick to create, easy for students.
+              </p>
+              <div className="mt-4 text-sm font-medium text-blue-600">
+                Best for quick assessments →
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Choose mode screen (for escape room only)
+  if (mode === 'choose') {
+    return (
+      <div className="min-h-screen p-8">
+        <div className="mx-auto max-w-2xl">
+          <button
+            onClick={() => setMode('activity-type')}
+            className="mb-6 inline-block text-gray-600 hover:text-black"
+          >
+            ← Back to activity type
+          </button>
 
           <h1 className="mb-2 text-3xl font-bold">Create Escape Room</h1>
           <p className="mb-8 text-gray-600">Choose how you want to create your escape room</p>
@@ -136,7 +190,7 @@ export default function CreatePage() {
     )
   }
 
-  // File upload mode
+  // File upload mode (for escape room)
   return (
     <div className="min-h-screen p-8">
       <div className="mx-auto max-w-xl">

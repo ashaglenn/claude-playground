@@ -5,11 +5,14 @@ import { createClient } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
+import { ActivityType } from '@/lib/types'
+
 interface EscapeRoom {
   id: string
   title: string
   share_code: string
   created_at: string
+  activity_type: ActivityType
   student_sessions: { id: string; completed_at: string | null }[]
 }
 
@@ -37,6 +40,7 @@ export default function DashboardPage() {
         title,
         share_code,
         created_at,
+        activity_type,
         student_sessions (id, completed_at)
       `)
       .eq('teacher_id', user.id)
@@ -163,7 +167,16 @@ export default function DashboardPage() {
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900">{room.title}</h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-lg font-semibold text-gray-900">{room.title}</h3>
+                        <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                          room.activity_type === 'quiz'
+                            ? 'bg-blue-100 text-blue-700'
+                            : 'bg-indigo-100 text-indigo-700'
+                        }`}>
+                          {room.activity_type === 'quiz' ? 'Quiz' : 'Escape Room'}
+                        </span>
+                      </div>
                       <p className="mt-1 text-sm text-gray-500">
                         Created {new Date(room.created_at).toLocaleDateString('en-US', {
                           month: 'long',
@@ -198,7 +211,7 @@ export default function DashboardPage() {
                         {copiedId === room.id ? 'Copied!' : 'Copy Link'}
                       </button>
                       <Link
-                        href={`/builder/${room.id}`}
+                        href={room.activity_type === 'quiz' ? `/quiz-builder/${room.id}` : `/builder/${room.id}`}
                         className="rounded-lg bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700 hover:bg-amber-100 transition-colors"
                       >
                         Edit

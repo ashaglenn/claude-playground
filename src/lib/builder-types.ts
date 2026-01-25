@@ -1,4 +1,4 @@
-import { GameContent, Question, CheckpointLetter, AnswerKey, CustomThemeBackgrounds, QuestionType, HotspotRegion, isHotspotQuestion, isDragDropQuestion, isFillBlankQuestion } from './types'
+import { GameContent, Question, CheckpointLetter, AnswerKey, CustomThemeBackgrounds, QuestionType, HotspotRegion, isHotspotQuestion, isDragDropQuestion, isFillBlankQuestion, QuizContent } from './types'
 
 export interface ReflectionData {
   question: string
@@ -453,3 +453,180 @@ export function gameContentToBuilderState(content: GameContent, title: string): 
 
   return { title, theme, backgroundImage, welcomeMessage, customThemeId, customThemeBackgrounds, checkpoints, finalWord, finalClue }
 }
+
+// Quiz Builder State (simpler than escape room - no checkpoints)
+export interface QuizBuilderState {
+  title: string
+  theme: string
+  backgroundImage?: string
+  welcomeMessage: string
+  customThemeId?: string
+  customThemeBackgrounds?: CustomThemeBackgrounds
+  questions: QuestionData[]
+}
+
+// Create empty quiz builder state
+export function createEmptyQuizBuilderState(numQuestions: number = 3): QuizBuilderState {
+  return {
+    title: '',
+    theme: 'classic',
+    welcomeMessage: '',
+    questions: Array.from({ length: numQuestions }, (_, i) => createEmptyQuizQuestion(i + 1)),
+  }
+}
+
+// Create an empty quiz question (simpler defaults)
+export function createEmptyQuizQuestion(questionNum: number, questionType: QuestionType = 'multiple-choice'): QuestionData {
+  switch (questionType) {
+    case 'hotspot':
+      return {
+        type: 'hotspot',
+        title: `Question ${questionNum}`,
+        question: '',
+        imageUrl: undefined,
+        hotspotRegion: undefined,
+        correctMessage: '',
+        incorrectMessage: '',
+        labeledImageUrl: undefined,
+      }
+    case 'drag-drop':
+      return {
+        type: 'drag-drop',
+        title: `Question ${questionNum}`,
+        question: '',
+        imageUrl: undefined,
+        sentence: '',
+        correctWords: [],
+        distractorWords: [],
+        correctMessage: '',
+        incorrectMessage: '',
+      }
+    case 'fill-blank':
+      return {
+        type: 'fill-blank',
+        title: `Question ${questionNum}`,
+        question: '',
+        imageUrl: undefined,
+        sentence: '',
+        correctAnswer: '',
+        correctMessage: '',
+        incorrectMessage: '',
+      }
+    case 'multiple-choice':
+    default:
+      return {
+        type: 'multiple-choice',
+        title: `Question ${questionNum}`,
+        question: '',
+        imageUrl: undefined,
+        answers: {
+          A: createEmptyAnswer(),
+          B: createEmptyAnswer(),
+          C: createEmptyAnswer(),
+        },
+        correct: 'A',
+        correctMessage: '',
+      }
+  }
+}
+
+// Convert QuizBuilderState to QuizContent for saving
+export function quizBuilderStateToQuizContent(state: QuizBuilderState): QuizContent {
+  const questions: Question[] = state.questions.map((q, index) => {
+    const baseQuestion = {
+      id: index + 1,
+      checkpoint: 1, // Quiz questions don't use checkpoints, but keep for compatibility
+      title: q.title,
+      question: q.question,
+      imageUrl: q.imageUrl,
+      correctMessage: q.correctMessage,
+    }
+
+    if (isHotspotQuestionData(q)) {
+      return {
+        ...baseQuestion,
+        type: 'hotspot' as const,
+        imageUrl: q.imageUrl || '',
+        hotspotRegion: q.hotspotRegion || { type: 'rectangle' as const, coords: [0, 0, 100, 100] },
+        incorrectMessage: q.incorrectMessage,
+        labeledImageUrl: q.labeledImageUrl,
+      }
+    } else if (isDragDropQuestionData(q)) {
+      return {
+        ...baseQuestion,
+        type: 'drag-drop' as const,
+        sentence: q.sentence,
+        correctWords: q.correctWords,
+        distractorWords: q.distractorWords,
+        incorrectMessage: q.incorrectMessage,
+      }
+    } else if (isFillBlankQuestionData(q)) {
+      return {
+        ...baseQuestion,
+        type: 'fill-blank' as const,
+        sentence: q.sentence,
+        correctAnswer: q.correctAnswer,
+        incorrectMessage: q.incorrectMessage,
+      }
+    } else {
+      // Multiple choice
+      const mcq = q as MultipleChoiceQuestionData | LegacyQuestionData
+      return {
+        ...baseQuestion,
+        type: 'multiple-choice' as const,
+        answers: {
+          A: {
+            text: mcq.answers.A.text,
+            teaching: mcq.answers.A.teaching,
+            reflectionQuestion: mcq.answers.A.reflection.question,
+            reflectionAnswers: mcq.answers.A.reflection.answers,
+            reflectionCorrect: mcq.answers.A.reflection.correct,
+            reflectionWrongMessages: mcq.answers.A.reflection.wrongMessages,
+          },
+          B: {
+            text: mcq.answers.B.text,
+            teaching: mcq.answers.B.teaching,
+            reflectionQuestion: mcq.answers.B.reflection.question,
+            reflectionAnswers: mcq.answers.B.reflection.answers,
+            reflectionCorrect: mcq.answers.B.reflection.correct,
+            reflectionWrongMessages: mcq.answers.B.reflection.wrongMessages,
+          },
+          C: {
+            text: mcq.answers.C.text,
+            teaching: mcq.answers.C.teaching,
+            reflectionQuestion: mcq.answers.C.reflection.question,
+            reflectionAnswers: mcq.answers.C.reflection.answers,
+            reflectionCorrect: mcq.answers.C.reflection.correct,
+            reflectionWrongMessages: mcq.answers.C.reflection.wrongMessages,
+          },
+        },
+        correct: mcq.correct,
+      }
+    }
+  })
+
+  return {
+    questions,
+    theme: state.theme,
+    backgroundImage: state.backgroundImage,
+    welcomeMessage: state.welcomeMessage || undefined,
+    customThemeId: state.customThemeId,
+    customThemeBackgrounds: state.customThemeBackgrounds,
+  }
+}
+
+// Convert QuizContent back to QuizBuilderState for editing
+export function quizContentToQuizBuilderState(content: QuizContent, title: string): QuizBuilderState {
+  const questions: QuestionData[] = content.questions.map(q => convertQuestionToBuilderData(q))
+
+  return {
+    title,
+    theme: content.theme || 'classic',
+    backgroundImage: content.backgroundImage,
+    welcomeMessage: content.welcomeMessage || '',
+    customThemeId: content.customThemeId,
+    customThemeBackgrounds: content.customThemeBackgrounds,
+    questions,
+  }
+}
+

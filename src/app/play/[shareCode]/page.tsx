@@ -3,14 +3,16 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
 import { useParams } from 'next/navigation'
-import { GameContent } from '@/lib/types'
+import { GameContent, QuizContent, ActivityType } from '@/lib/types'
 import { ThemeProvider } from '@/context/ThemeContext'
 import StudentGame from '@/components/StudentGame'
+import StudentQuiz from '@/components/StudentQuiz'
 
 interface EscapeRoom {
   id: string
   title: string
-  game_content: GameContent
+  game_content: GameContent | QuizContent
+  activity_type: ActivityType
 }
 
 export default function PlayPage() {
@@ -31,12 +33,12 @@ export default function PlayPage() {
   const loadEscapeRoom = async () => {
     const { data, error } = await supabase
       .from('escape_rooms')
-      .select('id, title, game_content')
+      .select('id, title, game_content, activity_type')
       .eq('share_code', shareCode)
       .single()
 
     if (error || !data) {
-      setError('Escape room not found')
+      setError('Activity not found')
     } else {
       setEscapeRoom(data)
     }
@@ -155,7 +157,7 @@ export default function PlayPage() {
                   color: 'var(--theme-primary-text)',
                 }}
               >
-                Start Escape Room
+                {escapeRoom.activity_type === 'quiz' ? 'Start Quiz' : 'Start Escape Room'}
               </button>
             </form>
           </div>
@@ -164,10 +166,20 @@ export default function PlayPage() {
     )
   }
 
-  // Show the game
+  // Show the game or quiz based on activity type
+  if (escapeRoom.activity_type === 'quiz') {
+    return (
+      <StudentQuiz
+        quizContent={escapeRoom.game_content as QuizContent}
+        quizId={escapeRoom.id}
+        onComplete={handleGameComplete}
+      />
+    )
+  }
+
   return (
     <StudentGame
-      gameContent={escapeRoom.game_content}
+      gameContent={escapeRoom.game_content as GameContent}
       gameId={escapeRoom.id}
       onComplete={handleGameComplete}
     />
