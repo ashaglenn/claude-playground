@@ -148,8 +148,8 @@ export interface GameState {
   lockClickOrder: string[]
 }
 
-// Activity type for distinguishing between escape rooms and quizzes
-export type ActivityType = 'escape_room' | 'quiz'
+// Activity type for distinguishing between escape rooms, quizzes, and flashcards
+export type ActivityType = 'escape_room' | 'quiz' | 'flashcard'
 
 // Quiz-specific content (simpler than GameContent - no letters/finalWord)
 export interface QuizContent {
@@ -180,4 +180,29 @@ export interface QuizState {
   lastAnswerCorrect: boolean | null
   lastCorrectAnswer: string | null
   answerOrder: Record<number, AnswerKey[]>
+}
+
+// Flashcard types
+export interface Flashcard {
+  id: number
+  front: string
+  back: string
+  frontImageUrl?: string
+  backImageUrl?: string
+}
+
+export interface FlashcardContent {
+  cards: Flashcard[]
+  title?: string
+  description?: string
+}
+
+export type FlashcardScreen = 'start' | 'study' | 'completed'
+
+export interface FlashcardState {
+  currentScreen: FlashcardScreen
+  flashcardContent: FlashcardContent | null
+  currentCardIndex: number
+  isFlipped: boolean
+  viewedCards: number[]
 }

@@ -1,0 +1,49 @@
+TITLE: My Flashcard Set
+DESCRIPTION: Study cards for vocabulary and key concepts.
+
+CARD 1
+FRONT: What is photosynthesis?
+BACK: The process by which plants convert sunlight, water, and carbon dioxide into glucose and oxygen.
+
+CARD 2
+FRONT: What is the mitochondria?
+BACK: The powerhouse of the cell - it produces energy (ATP) through cellular respiration.
+
+CARD 3
+FRONT: Define osmosis
+BACK: The movement of water molecules through a semi-permeable membrane from an area of low solute concentration to high solute concentration.
+
+CARD 4
+FRONT: What is the formula for the area of a circle?
+BACK: A = πr² (pi times radius squared)
+
+CARD 5
+FRONT: Who wrote "Romeo and Juliet"?
+BACK: William Shakespeare
+
+CARD 6
+FRONT: Identify this element on the periodic table
+FRONT_IMAGE: https://example.com/gold-element.jpg
+BACK: Gold (Au) - Atomic number 79
+BACK_IMAGE: https://example.com/gold-bar.jpg
+
+---
+NOTES:
+- Each card starts with "CARD #" followed by FRONT: and BACK: fields
+- TITLE and DESCRIPTION at the top are optional
+- You can have as many cards as you want
+- Add FRONT_IMAGE: or BACK_IMAGE: with a URL for images (text will be on left, image on right)
+- Images can also be uploaded directly in the builder after importing
+
+Alternative formats also work:
+
+Simple format (separated by blank lines):
+Q: What is the capital of France?
+A: Paris
+
+Tab-separated format (one card per line):
+Term	Definition
+Vocabulary Word	Its meaning
+
+Dash format (simple terms):
+Photosynthesis - The process plants use to make food from sunlight

@@ -1,4 +1,4 @@
-import { GameContent, Question, CheckpointLetter, AnswerKey, CustomThemeBackgrounds, QuestionType, HotspotRegion, isHotspotQuestion, isDragDropQuestion, isFillBlankQuestion, QuizContent } from './types'
+import { GameContent, Question, CheckpointLetter, AnswerKey, CustomThemeBackgrounds, QuestionType, HotspotRegion, isHotspotQuestion, isDragDropQuestion, isFillBlankQuestion, QuizContent, FlashcardContent, Flashcard } from './types'
 
 export interface ReflectionData {
   question: string
@@ -627,6 +627,57 @@ export function quizContentToQuizBuilderState(content: QuizContent, title: strin
     customThemeId: content.customThemeId,
     customThemeBackgrounds: content.customThemeBackgrounds,
     questions,
+  }
+}
+
+// Flashcard Builder Types
+export interface FlashcardBuilderCard {
+  front: string
+  back: string
+  frontImageUrl?: string
+  backImageUrl?: string
+}
+
+export interface FlashcardBuilderState {
+  title: string
+  description: string
+  cards: FlashcardBuilderCard[]
+}
+
+export function createEmptyFlashcardBuilderState(numCards: number = 5): FlashcardBuilderState {
+  return {
+    title: '',
+    description: '',
+    cards: Array.from({ length: numCards }, () => ({ front: '', back: '' })),
+  }
+}
+
+export function flashcardBuilderStateToContent(state: FlashcardBuilderState): FlashcardContent {
+  const cards: Flashcard[] = state.cards.map((card, index) => ({
+    id: index + 1,
+    front: card.front,
+    back: card.back,
+    frontImageUrl: card.frontImageUrl || undefined,
+    backImageUrl: card.backImageUrl || undefined,
+  }))
+
+  return {
+    cards,
+    title: state.title || undefined,
+    description: state.description || undefined,
+  }
+}
+
+export function flashcardContentToBuilderState(content: FlashcardContent, title: string): FlashcardBuilderState {
+  return {
+    title: title || content.title || '',
+    description: content.description || '',
+    cards: content.cards.map(card => ({
+      front: card.front,
+      back: card.back,
+      frontImageUrl: card.frontImageUrl,
+      backImageUrl: card.backImageUrl,
+    })),
   }
 }
 

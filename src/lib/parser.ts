@@ -1,4 +1,4 @@
-import { GameContent, Question, Answer, CheckpointLetter, AnswerKey, QuizContent, QuestionType } from './types'
+import { GameContent, Question, Answer, CheckpointLetter, AnswerKey, QuizContent, QuestionType, FlashcardContent, Flashcard } from './types'
 
 function getLine(lines: string[], prefix: string): string {
   const line = lines.find(l => l.toUpperCase().startsWith(prefix.toUpperCase()))
@@ -374,5 +374,112 @@ export function parseEscapeRoomFile(content: string): GameContent {
     welcomeMessage,
     finalWord,
     finalClue,
+  }
+}
+
+// ============================================
+// Flashcard parser
+// ============================================
+
+export function parseFlashcardFile(content: string): FlashcardContent {
+  const cards: Flashcard[] = []
+  const lines = content.split('\n')
+
+  // Get optional title and description from top
+  const title = getLineValue(lines, 'TITLE:') || undefined
+  const description = getLineValue(lines, 'DESCRIPTION:') || undefined
+
+  // Try splitting by CARD markers first
+  const cardBlocks = content.split(/(?=CARD\s+\d+)/i)
+  const numberedBlocks = cardBlocks.filter(b => /^CARD\s+\d+/i.test(b.trim()))
+
+  if (numberedBlocks.length > 0) {
+    // Format: CARD 1, CARD 2, etc.
+    for (let i = 0; i < numberedBlocks.length; i++) {
+      const block = numberedBlocks[i]
+      const blockLines = block.split('\n').map(l => l.trim()).filter(l => l)
+
+      const front = getLineValue(blockLines, 'FRONT:') || getLineValue(blockLines, 'Q:') || getLineValue(blockLines, 'QUESTION:')
+      const back = getLineValue(blockLines, 'BACK:') || getLineValue(blockLines, 'A:') || getLineValue(blockLines, 'ANSWER:')
+      const frontImageUrl = getLineValue(blockLines, 'FRONT_IMAGE:') || getLineValue(blockLines, 'Q_IMAGE:') || undefined
+      const backImageUrl = getLineValue(blockLines, 'BACK_IMAGE:') || getLineValue(blockLines, 'A_IMAGE:') || undefined
+
+      if (front || back) {
+        cards.push({
+          id: i + 1,
+          front: front || '',
+          back: back || '',
+          frontImageUrl: frontImageUrl || undefined,
+          backImageUrl: backImageUrl || undefined,
+        })
+      }
+    }
+  } else {
+    // Try simpler formats:
+    // Format 1: Q: / A: pairs separated by blank lines
+    // Format 2: Just lines with separator (---)
+    // Format 3: Tab-separated (front\tback)
+
+    // Check for tab-separated format
+    const tabLines = lines.filter(l => l.includes('\t') && l.trim())
+    if (tabLines.length > 0) {
+      for (let i = 0; i < tabLines.length; i++) {
+        const parts = tabLines[i].split('\t')
+        if (parts.length >= 2) {
+          cards.push({
+            id: i + 1,
+            front: parts[0].trim(),
+            back: parts[1].trim(),
+          })
+        }
+      }
+    } else {
+      // Try Q: / A: format or front/back in blocks
+      const blocks = content.split(/\n\s*\n/).filter(b => b.trim())
+
+      for (let i = 0; i < blocks.length; i++) {
+        const block = blocks[i]
+        const blockLines = block.split('\n').map(l => l.trim()).filter(l => l)
+
+        // Skip header block with TITLE/DESCRIPTION
+        if (blockLines.some(l => l.toUpperCase().startsWith('TITLE:') || l.toUpperCase().startsWith('DESCRIPTION:'))) {
+          continue
+        }
+
+        let front = ''
+        let back = ''
+
+        // Try Q:/A: or FRONT:/BACK: format
+        front = getLineValue(blockLines, 'FRONT:') || getLineValue(blockLines, 'Q:') || getLineValue(blockLines, 'QUESTION:')
+        back = getLineValue(blockLines, 'BACK:') || getLineValue(blockLines, 'A:') || getLineValue(blockLines, 'ANSWER:')
+
+        // If not found, use first line as front and rest as back
+        if (!front && !back && blockLines.length >= 2) {
+          front = blockLines[0]
+          back = blockLines.slice(1).join(' ')
+        } else if (!front && !back && blockLines.length === 1) {
+          // Single line with dash separator: "term - definition"
+          const dashParts = blockLines[0].split(' - ')
+          if (dashParts.length >= 2) {
+            front = dashParts[0].trim()
+            back = dashParts.slice(1).join(' - ').trim()
+          }
+        }
+
+        if (front || back) {
+          cards.push({
+            id: cards.length + 1,
+            front: front || '',
+            back: back || '',
+          })
+        }
+      }
+    }
+  }
+
+  return {
+    cards,
+    title,
+    description,
   }
 }

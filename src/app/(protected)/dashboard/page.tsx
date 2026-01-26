@@ -71,7 +71,7 @@ export default function DashboardPage() {
   }
 
   const handleDelete = async (roomId: string) => {
-    if (!confirm('Are you sure you want to delete this escape room?')) return
+    if (!confirm('Are you sure you want to delete this activity?')) return
 
     await supabase.from('escape_rooms').delete().eq('id', roomId)
     setEscapeRooms(escapeRooms.filter(r => r.id !== roomId))
@@ -132,8 +132,8 @@ export default function DashboardPage() {
       {/* Main Content */}
       <main className="mx-auto max-w-6xl px-6 py-8">
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900">My Escape Rooms</h2>
-          <p className="mt-1 text-gray-600">Create and manage your interactive quizzes</p>
+          <h2 className="text-2xl font-bold text-gray-900">My Activities</h2>
+          <p className="mt-1 text-gray-600">Create and manage your escape rooms, quizzes, and flashcards</p>
         </div>
 
         {escapeRooms.length === 0 ? (
@@ -143,15 +143,15 @@ export default function DashboardPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900">No escape rooms yet</h3>
+            <h3 className="text-lg font-semibold text-gray-900">No activities yet</h3>
             <p className="mt-2 text-gray-600 max-w-sm mx-auto">
-              Create your first escape room to start engaging your students with interactive quizzes.
+              Create your first activity to start engaging your students with interactive content.
             </p>
             <Link
               href="/create"
               className="btn-primary inline-block mt-6"
             >
-              Create Your First Escape Room
+              Create Your First Activity
             </Link>
           </div>
         ) : (
@@ -172,9 +172,11 @@ export default function DashboardPage() {
                         <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                           room.activity_type === 'quiz'
                             ? 'bg-blue-100 text-blue-700'
+                            : room.activity_type === 'flashcard'
+                            ? 'bg-purple-100 text-purple-700'
                             : 'bg-indigo-100 text-indigo-700'
                         }`}>
-                          {room.activity_type === 'quiz' ? 'Quiz' : 'Escape Room'}
+                          {room.activity_type === 'quiz' ? 'Quiz' : room.activity_type === 'flashcard' ? 'Flashcards' : 'Escape Room'}
                         </span>
                       </div>
                       <p className="mt-1 text-sm text-gray-500">
@@ -211,7 +213,13 @@ export default function DashboardPage() {
                         {copiedId === room.id ? 'Copied!' : 'Copy Link'}
                       </button>
                       <Link
-                        href={room.activity_type === 'quiz' ? `/quiz-builder/${room.id}` : `/builder/${room.id}`}
+                        href={
+                          room.activity_type === 'quiz'
+                            ? `/quiz-builder/${room.id}`
+                            : room.activity_type === 'flashcard'
+                            ? `/flashcard-builder/${room.id}`
+                            : `/builder/${room.id}`
+                        }
                         className="rounded-lg bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700 hover:bg-amber-100 transition-colors"
                       >
                         Edit
