@@ -13,15 +13,24 @@ interface EscapeRoom {
   share_code: string
   created_at: string
   activity_type: ActivityType
-  student_sessions: { id: string; completed_at: string | null }[]
+  student_sessions: { id: string; completed_at: string | null; archived_at: string | null }[]
+}
+
+interface StudentSession {
+  id: string
+  student_name: string
+  started_at: string
+  completed_at: string | null
+  archived_at: string | null
 }
 
 export default function DashboardPage() {
   const [escapeRooms, setEscapeRooms] = useState<EscapeRoom[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
-  const [sessions, setSessions] = useState<any[]>([])
+  const [sessions, setSessions] = useState<StudentSession[]>([])
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [showArchived, setShowArchived] = useState(false)
   const router = useRouter()
   const supabase = createClient()
 
@@ -41,7 +50,7 @@ export default function DashboardPage() {
         share_code,
         created_at,
         activity_type,
-        student_sessions (id, completed_at)
+        student_sessions (id, completed_at, archived_at)
       `)
       .eq('teacher_id', user.id)
       .order('created_at', { ascending: false })
@@ -52,16 +61,99 @@ export default function DashboardPage() {
     setLoading(false)
   }
 
-  const loadSessions = async (roomId: string) => {
-    const { data } = await supabase
+  const loadSessions = async (roomId: string, includeArchived: boolean = showArchived) => {
+    let query = supabase
       .from('student_sessions')
       .select('*')
       .eq('escape_room_id', roomId)
       .order('started_at', { ascending: false })
 
+    if (!includeArchived) {
+      query = query.is('archived_at', null)
+    }
+
+    const { data } = await query
+
     if (data) {
       setSessions(data)
       setSelectedRoom(roomId)
+    }
+  }
+
+  // Delete individual session
+  const handleDeleteSession = async (sessionId: string) => {
+    if (!confirm('Are you sure you want to delete this result?')) return
+
+    await supabase.from('student_sessions').delete().eq('id', sessionId)
+    setSessions(sessions.filter(s => s.id !== sessionId))
+    loadEscapeRooms() // Refresh counts
+  }
+
+  // Archive individual session
+  const handleArchiveSession = async (sessionId: string) => {
+    await supabase
+      .from('student_sessions')
+      .update({ archived_at: new Date().toISOString() })
+      .eq('id', sessionId)
+
+    if (!showArchived) {
+      setSessions(sessions.filter(s => s.id !== sessionId))
+    } else {
+      setSessions(sessions.map(s =>
+        s.id === sessionId ? { ...s, archived_at: new Date().toISOString() } : s
+      ))
+    }
+    loadEscapeRooms() // Refresh counts
+  }
+
+  // Restore archived session
+  const handleRestoreSession = async (sessionId: string) => {
+    await supabase
+      .from('student_sessions')
+      .update({ archived_at: null })
+      .eq('id', sessionId)
+
+    setSessions(sessions.map(s =>
+      s.id === sessionId ? { ...s, archived_at: null } : s
+    ))
+    loadEscapeRooms() // Refresh counts
+  }
+
+  // Clear all results for an activity
+  const handleClearAllResults = async (roomId: string) => {
+    if (!confirm('Are you sure you want to delete ALL results for this activity? This cannot be undone.')) return
+
+    await supabase.from('student_sessions').delete().eq('escape_room_id', roomId)
+    setSessions([])
+    loadEscapeRooms() // Refresh counts
+  }
+
+  // Archive all results for an activity
+  const handleArchiveAllResults = async (roomId: string) => {
+    if (!confirm('Are you sure you want to archive all results for this activity?')) return
+
+    await supabase
+      .from('student_sessions')
+      .update({ archived_at: new Date().toISOString() })
+      .eq('escape_room_id', roomId)
+      .is('archived_at', null)
+
+    if (!showArchived) {
+      setSessions([])
+    } else {
+      if (selectedRoom === roomId) {
+        loadSessions(roomId, true)
+      }
+    }
+    loadEscapeRooms() // Refresh counts
+  }
+
+  // Toggle archived view
+  const handleToggleArchived = () => {
+    const newShowArchived = !showArchived
+    setShowArchived(newShowArchived)
+    if (selectedRoom) {
+      loadSessions(selectedRoom, newShowArchived)
     }
   }
 
@@ -157,8 +249,11 @@ export default function DashboardPage() {
         ) : (
           <div className="grid gap-6">
             {escapeRooms.map((room) => {
-              const completedCount = room.student_sessions?.filter(s => s.completed_at).length || 0
-              const totalCount = room.student_sessions?.length || 0
+              // Only count non-archived sessions
+              const activeSessions = room.student_sessions?.filter(s => !s.archived_at) || []
+              const completedCount = activeSessions.filter(s => s.completed_at).length
+              const totalCount = activeSessions.length
+              const archivedCount = room.student_sessions?.filter(s => s.archived_at).length || 0
 
               return (
                 <div
@@ -199,6 +294,14 @@ export default function DashboardPage() {
                             <span className="font-medium text-gray-900">{totalCount - completedCount}</span> in progress
                           </span>
                         </div>
+                        {archivedCount > 0 && (
+                          <div className="flex items-center gap-2">
+                            <div className="h-2 w-2 rounded-full bg-gray-400"></div>
+                            <span className="text-sm text-gray-600">
+                              <span className="font-medium text-gray-900">{archivedCount}</span> archived
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -241,9 +344,39 @@ export default function DashboardPage() {
 
                   {selectedRoom === room.id && (
                     <div className="mt-6 border-t border-gray-100 pt-6">
-                      <h4 className="font-medium text-gray-900 mb-4">Student Results</h4>
+                      <div className="flex items-center justify-between mb-4">
+                        <h4 className="font-medium text-gray-900">Student Results</h4>
+                        <div className="flex items-center gap-3">
+                          {/* Show Archived Toggle */}
+                          <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={showArchived}
+                              onChange={handleToggleArchived}
+                              className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                            />
+                            Show archived
+                          </label>
+                          {/* Archive All Button */}
+                          <button
+                            onClick={() => handleArchiveAllResults(room.id)}
+                            className="cursor-pointer rounded-lg px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 transition-colors"
+                          >
+                            Archive All
+                          </button>
+                          {/* Clear All Button */}
+                          <button
+                            onClick={() => handleClearAllResults(room.id)}
+                            className="cursor-pointer rounded-lg px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 transition-colors"
+                          >
+                            Clear All
+                          </button>
+                        </div>
+                      </div>
                       {sessions.length === 0 ? (
-                        <p className="text-sm text-gray-500">No students have played yet.</p>
+                        <p className="text-sm text-gray-500">
+                          {showArchived ? 'No results found.' : 'No students have played yet.'}
+                        </p>
                       ) : (
                         <div className="overflow-hidden rounded-lg border border-gray-200">
                           <table className="w-full text-sm">
@@ -252,12 +385,21 @@ export default function DashboardPage() {
                                 <th className="px-4 py-3 text-left font-medium text-gray-600">Name</th>
                                 <th className="px-4 py-3 text-left font-medium text-gray-600">Started</th>
                                 <th className="px-4 py-3 text-left font-medium text-gray-600">Status</th>
+                                <th className="px-4 py-3 text-right font-medium text-gray-600">Actions</th>
                               </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
                               {sessions.map((session) => (
-                                <tr key={session.id} className="hover:bg-gray-50">
-                                  <td className="px-4 py-3 font-medium text-gray-900">{session.student_name}</td>
+                                <tr
+                                  key={session.id}
+                                  className={`hover:bg-gray-50 ${session.archived_at ? 'opacity-60' : ''}`}
+                                >
+                                  <td className="px-4 py-3 font-medium text-gray-900">
+                                    {session.student_name}
+                                    {session.archived_at && (
+                                      <span className="ml-2 text-xs text-gray-400">(archived)</span>
+                                    )}
+                                  </td>
                                   <td className="px-4 py-3 text-gray-600">
                                     {new Date(session.started_at).toLocaleString()}
                                   </td>
@@ -275,6 +417,31 @@ export default function DashboardPage() {
                                         In Progress
                                       </span>
                                     )}
+                                  </td>
+                                  <td className="px-4 py-3 text-right">
+                                    <div className="flex items-center justify-end gap-2">
+                                      {session.archived_at ? (
+                                        <button
+                                          onClick={() => handleRestoreSession(session.id)}
+                                          className="cursor-pointer text-xs font-medium text-indigo-600 hover:text-indigo-800"
+                                        >
+                                          Restore
+                                        </button>
+                                      ) : (
+                                        <button
+                                          onClick={() => handleArchiveSession(session.id)}
+                                          className="cursor-pointer text-xs font-medium text-gray-500 hover:text-gray-700"
+                                        >
+                                          Archive
+                                        </button>
+                                      )}
+                                      <button
+                                        onClick={() => handleDeleteSession(session.id)}
+                                        className="cursor-pointer text-xs font-medium text-red-500 hover:text-red-700"
+                                      >
+                                        Delete
+                                      </button>
+                                    </div>
                                   </td>
                                 </tr>
                               ))}
