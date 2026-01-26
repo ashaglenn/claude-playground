@@ -1,0 +1,81 @@
+WELCOME_MESSAGE: Welcome to this escape room! Work through each checkpoint to collect letters and solve the final puzzle.
+
+LETTER_1: A
+LETTER_1_MESSAGE: Great job completing Checkpoint 1! You earned the letter A.
+LETTER_2: R
+LETTER_2_MESSAGE: Excellent work on Checkpoint 2! You earned the letter R.
+LETTER_3: T
+LETTER_3_MESSAGE: Amazing! You completed Checkpoint 3 and earned the letter T.
+
+FINAL_WORD: ART
+FINAL_CLUE: What do you call creative expression through painting, sculpture, or drawing?
+
+---
+
+CHECKPOINT 1
+
+QUESTION 1
+TYPE: multiple-choice
+QUESTION: What is 2 + 2?
+A. 3
+B. 4 *
+C. 5
+CORRECT_MESSAGE: That's right!
+WRONG_B_TEACHING: Remember, 2 + 2 equals 4, not 3 or 5.
+
+QUESTION 2
+TYPE: fill-blank
+QUESTION: Complete the equation.
+SENTENCE: 5 + 5 = [BLANK]
+ANSWER: 10
+CORRECT_MESSAGE: Perfect!
+INCORRECT_MESSAGE: Try adding 5 and 5 together.
+
+---
+
+CHECKPOINT 2
+
+QUESTION 3
+TYPE: multiple-choice
+QUESTION: What color do you get when you mix red and blue?
+A. Green
+B. Orange
+C. Purple *
+CORRECT_MESSAGE: Correct! Red and blue make purple.
+
+QUESTION 4
+TYPE: drag-drop
+QUESTION: Complete the color mixing sentence.
+SENTENCE: Mixing [BLANK] and [BLANK] creates green.
+CORRECT_WORDS: yellow, blue
+DISTRACTOR_WORDS: red, orange, purple
+CORRECT_MESSAGE: That's right! Yellow and blue make green.
+INCORRECT_MESSAGE: Think about which primary colors combine to make green.
+
+---
+
+CHECKPOINT 3
+
+QUESTION 5
+TYPE: multiple-choice
+QUESTION: How many days are in a week?
+A. 5
+B. 6
+C. 7 *
+CORRECT_MESSAGE: Correct!
+
+QUESTION 6
+TYPE: hotspot
+QUESTION: Click on the sun in this image.
+IMAGE:
+CORRECT_MESSAGE: You found the sun!
+INCORRECT_MESSAGE: Look for the bright circular object in the sky.
+
+---
+NOTES:
+- LETTER_1, LETTER_2, etc. define the letters earned at each checkpoint
+- FINAL_WORD is what students spell at the end
+- FINAL_CLUE is the hint for the final puzzle
+- Mark correct multiple choice answers with * at the end
+- For hotspot questions, upload the image and draw the region in the builder
+- WRONG_X_TEACHING provides teaching text when answer X is chosen incorrectly

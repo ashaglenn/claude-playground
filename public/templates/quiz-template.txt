@@ -1,0 +1,49 @@
+WELCOME_MESSAGE: Welcome to this quiz! Answer each question to the best of your ability.
+
+QUESTION 1
+TYPE: multiple-choice
+QUESTION: What is the capital of France?
+A. London
+B. Paris *
+C. Berlin
+CORRECT_MESSAGE: Correct! Paris is the capital of France.
+
+QUESTION 2
+TYPE: multiple-choice
+QUESTION: Which planet is known as the Red Planet?
+A. Venus
+B. Jupiter
+C. Mars *
+CORRECT_MESSAGE: That's right! Mars is called the Red Planet due to its reddish appearance.
+
+QUESTION 3
+TYPE: fill-blank
+QUESTION: Complete the sentence below.
+SENTENCE: The largest ocean on Earth is the [BLANK] Ocean.
+ANSWER: Pacific
+CORRECT_MESSAGE: Correct! The Pacific Ocean is the largest.
+INCORRECT_MESSAGE: Not quite. Think about the ocean between Asia and the Americas.
+
+QUESTION 4
+TYPE: drag-drop
+QUESTION: Drag the words to complete the sentence.
+SENTENCE: Water [BLANK] at 100 degrees Celsius and [BLANK] at 0 degrees.
+CORRECT_WORDS: boils, freezes
+DISTRACTOR_WORDS: melts, evaporates
+CORRECT_MESSAGE: Perfect! You know your water states.
+INCORRECT_MESSAGE: Remember: boiling happens at 100°C, freezing at 0°C.
+
+QUESTION 5
+TYPE: hotspot
+QUESTION: Click on the largest continent on the map.
+IMAGE:
+CORRECT_MESSAGE: Correct! Asia is the largest continent.
+INCORRECT_MESSAGE: That's not quite right. Look for Asia, the largest landmass.
+
+---
+NOTES:
+- For multiple choice: mark the correct answer with * at the end
+- For fill-blank: use [BLANK] in the sentence where the answer goes
+- For drag-drop: list correct words in order, distractors are extra wrong options
+- For hotspot: leave IMAGE: blank to upload in the builder, then draw the clickable region
+- WELCOME_MESSAGE is optional

@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase'
-import { parseGameFile } from '@/lib/parser'
+import { parseGameFile, parseQuizFile, parseEscapeRoomFile } from '@/lib/parser'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ActivityType } from '@/lib/types'
@@ -16,14 +16,17 @@ function generateShareCode(): string {
   return code
 }
 
+type Mode = 'activity-type' | 'escape-room-choose' | 'quiz-choose' | 'upload' | 'paste'
+
 export default function CreatePage() {
-  const [mode, setMode] = useState<'activity-type' | 'choose' | 'upload'>('activity-type')
+  const [mode, setMode] = useState<Mode>('activity-type')
   const [activityType, setActivityType] = useState<ActivityType>('escape_room')
   const [title, setTitle] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [fileName, setFileName] = useState('')
   const [fileContent, setFileContent] = useState<string | null>(null)
+  const [pastedContent, setPastedContent] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
   const supabase = createClient()
@@ -46,18 +49,23 @@ export default function CreatePage() {
     e.preventDefault()
     setError('')
 
-    if (!fileContent) {
-      setError('Please upload a question file')
+    const content = mode === 'paste' ? pastedContent : fileContent
+
+    if (!content) {
+      setError(mode === 'paste' ? 'Please paste your questions' : 'Please upload a question file')
       return
     }
 
     setLoading(true)
 
     try {
-      const gameContent = parseGameFile(fileContent)
+      // Use the appropriate parser based on activity type
+      const gameContent = activityType === 'quiz'
+        ? parseQuizFile(content)
+        : parseEscapeRoomFile(content)
 
       if (gameContent.questions.length === 0) {
-        setError('No questions found in the file')
+        setError('No questions found. Please check the format.')
         setLoading(false)
         return
       }
@@ -74,6 +82,7 @@ export default function CreatePage() {
         title,
         game_content: gameContent,
         share_code: generateShareCode(),
+        activity_type: activityType,
       })
 
       if (insertError) {
@@ -84,9 +93,17 @@ export default function CreatePage() {
 
       router.push('/dashboard')
     } catch {
-      setError('Failed to parse the file. Please check the format.')
+      setError('Failed to parse the content. Please check the format.')
       setLoading(false)
     }
+  }
+
+  const resetState = () => {
+    setTitle('')
+    setError('')
+    setFileName('')
+    setFileContent(null)
+    setPastedContent('')
   }
 
   // Activity type selection screen
@@ -108,14 +125,15 @@ export default function CreatePage() {
             <button
               onClick={() => {
                 setActivityType('escape_room')
-                setMode('choose')
+                setMode('escape-room-choose')
+                resetState()
               }}
               className="rounded-xl border-2 border-gray-200 bg-white p-6 text-left transition-all hover:border-indigo-500 hover:shadow-lg"
             >
               <div className="mb-3 text-4xl">🔐</div>
               <h2 className="mb-2 text-xl font-semibold">Escape Room</h2>
               <p className="text-sm text-gray-600">
-                A multi-checkpoint adventure where students earn letters to solve a final puzzle. Includes teaching moments and reflection questions for wrong answers.
+                A multi-checkpoint adventure where students earn letters to solve a final puzzle. Includes teaching moments for wrong answers.
               </p>
               <div className="mt-4 text-sm font-medium text-indigo-600">
                 Best for in-depth learning →
@@ -123,7 +141,11 @@ export default function CreatePage() {
             </button>
 
             <button
-              onClick={() => router.push('/quiz-builder')}
+              onClick={() => {
+                setActivityType('quiz')
+                setMode('quiz-choose')
+                resetState()
+              }}
               className="rounded-xl border-2 border-gray-200 bg-white p-6 text-left transition-all hover:border-blue-500 hover:shadow-lg"
             >
               <div className="mb-3 text-4xl">📋</div>
@@ -141,8 +163,8 @@ export default function CreatePage() {
     )
   }
 
-  // Choose mode screen (for escape room only)
-  if (mode === 'choose') {
+  // Escape Room creation method selection
+  if (mode === 'escape-room-choose') {
     return (
       <div className="min-h-screen p-8">
         <div className="mx-auto max-w-2xl">
@@ -156,52 +178,249 @@ export default function CreatePage() {
           <h1 className="mb-2 text-3xl font-bold">Create Escape Room</h1>
           <p className="mb-8 text-gray-600">Choose how you want to create your escape room</p>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-3">
             <Link
               href="/builder"
               className="rounded-xl border-2 border-gray-200 bg-white p-6 text-left transition-all hover:border-black hover:shadow-lg"
             >
-              <div className="mb-3 text-4xl">📝</div>
-              <h2 className="mb-2 text-xl font-semibold">Form Builder</h2>
+              <div className="mb-3 text-3xl">📝</div>
+              <h2 className="mb-2 text-lg font-semibold">Form Builder</h2>
               <p className="text-sm text-gray-600">
-                Create your escape room using a visual form. See all questions at once and fill them in step by step.
+                Visual form to create questions step by step.
               </p>
               <div className="mt-4 text-sm font-medium text-black">
-                Recommended for most users →
+                Recommended →
               </div>
             </Link>
+
+            <button
+              onClick={() => setMode('paste')}
+              className="rounded-xl border-2 border-gray-200 bg-white p-6 text-left transition-all hover:border-black hover:shadow-lg"
+            >
+              <div className="mb-3 text-3xl">📋</div>
+              <h2 className="mb-2 text-lg font-semibold">Paste Text</h2>
+              <p className="text-sm text-gray-600">
+                Paste formatted questions directly.
+              </p>
+              <div className="mt-4 text-sm font-medium text-gray-500">
+                Quick import →
+              </div>
+            </button>
 
             <button
               onClick={() => setMode('upload')}
               className="rounded-xl border-2 border-gray-200 bg-white p-6 text-left transition-all hover:border-black hover:shadow-lg"
             >
-              <div className="mb-3 text-4xl">📄</div>
-              <h2 className="mb-2 text-xl font-semibold">Upload File</h2>
+              <div className="mb-3 text-3xl">📄</div>
+              <h2 className="mb-2 text-lg font-semibold">Upload File</h2>
               <p className="text-sm text-gray-600">
-                Upload a pre-formatted .txt file with your questions. Great if you have questions in a spreadsheet.
+                Upload a .txt file with questions.
               </p>
               <div className="mt-4 text-sm font-medium text-gray-500">
-                For advanced users →
+                From file →
               </div>
             </button>
+          </div>
+
+          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+            <p className="text-sm text-gray-600 mb-2">Need a template?</p>
+            <a
+              href="/templates/escape-room-template.txt"
+              download
+              className="text-sm font-medium text-indigo-600 hover:text-indigo-800"
+            >
+              Download Escape Room Template →
+            </a>
           </div>
         </div>
       </div>
     )
   }
 
-  // File upload mode (for escape room)
+  // Quiz creation method selection
+  if (mode === 'quiz-choose') {
+    return (
+      <div className="min-h-screen p-8">
+        <div className="mx-auto max-w-2xl">
+          <button
+            onClick={() => setMode('activity-type')}
+            className="mb-6 inline-block text-gray-600 hover:text-black"
+          >
+            ← Back to activity type
+          </button>
+
+          <h1 className="mb-2 text-3xl font-bold">Create Quiz</h1>
+          <p className="mb-8 text-gray-600">Choose how you want to create your quiz</p>
+
+          <div className="grid gap-4 sm:grid-cols-3">
+            <Link
+              href="/quiz-builder"
+              className="rounded-xl border-2 border-gray-200 bg-white p-6 text-left transition-all hover:border-black hover:shadow-lg"
+            >
+              <div className="mb-3 text-3xl">📝</div>
+              <h2 className="mb-2 text-lg font-semibold">Form Builder</h2>
+              <p className="text-sm text-gray-600">
+                Visual form to create questions step by step.
+              </p>
+              <div className="mt-4 text-sm font-medium text-black">
+                Recommended →
+              </div>
+            </Link>
+
+            <button
+              onClick={() => setMode('paste')}
+              className="rounded-xl border-2 border-gray-200 bg-white p-6 text-left transition-all hover:border-black hover:shadow-lg"
+            >
+              <div className="mb-3 text-3xl">📋</div>
+              <h2 className="mb-2 text-lg font-semibold">Paste Text</h2>
+              <p className="text-sm text-gray-600">
+                Paste formatted questions directly.
+              </p>
+              <div className="mt-4 text-sm font-medium text-gray-500">
+                Quick import →
+              </div>
+            </button>
+
+            <button
+              onClick={() => setMode('upload')}
+              className="rounded-xl border-2 border-gray-200 bg-white p-6 text-left transition-all hover:border-black hover:shadow-lg"
+            >
+              <div className="mb-3 text-3xl">📄</div>
+              <h2 className="mb-2 text-lg font-semibold">Upload File</h2>
+              <p className="text-sm text-gray-600">
+                Upload a .txt file with questions.
+              </p>
+              <div className="mt-4 text-sm font-medium text-gray-500">
+                From file →
+              </div>
+            </button>
+          </div>
+
+          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+            <p className="text-sm text-gray-600 mb-2">Need a template?</p>
+            <a
+              href="/templates/quiz-template.txt"
+              download
+              className="text-sm font-medium text-blue-600 hover:text-blue-800"
+            >
+              Download Quiz Template →
+            </a>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Paste mode
+  if (mode === 'paste') {
+    const backMode = activityType === 'quiz' ? 'quiz-choose' : 'escape-room-choose'
+    const label = activityType === 'quiz' ? 'Quiz' : 'Escape Room'
+
+    return (
+      <div className="min-h-screen p-8">
+        <div className="mx-auto max-w-2xl">
+          <button
+            onClick={() => {
+              setMode(backMode)
+              resetState()
+            }}
+            className="mb-6 inline-block text-gray-600 hover:text-black"
+          >
+            ← Back to options
+          </button>
+
+          <h1 className="mb-2 text-3xl font-bold">Paste {label} Questions</h1>
+          <p className="mb-4 text-gray-600">
+            Paste your formatted questions below.{' '}
+            <a
+              href={activityType === 'quiz' ? '/templates/quiz-template.txt' : '/templates/escape-room-template.txt'}
+              download
+              className="text-indigo-600 hover:underline"
+            >
+              Download template
+            </a>
+          </p>
+
+          <form onSubmit={handleCreate} className="flex flex-col gap-6">
+            <div>
+              <label className="mb-2 block font-medium">Title</label>
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder={`e.g., Chapter 5 ${label}`}
+                className="w-full rounded-lg border-2 border-gray-300 px-4 py-3 text-gray-900 focus:border-black focus:outline-none"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block font-medium">Questions</label>
+              <textarea
+                value={pastedContent}
+                onChange={(e) => setPastedContent(e.target.value)}
+                placeholder={`Paste your formatted questions here...\n\nExample:\n\nQUESTION 1\nTYPE: multiple-choice\nQUESTION: What is 2 + 2?\nA. 3\nB. 4 *\nC. 5\nCORRECT_MESSAGE: Correct!`}
+                className="w-full rounded-lg border-2 border-gray-300 px-4 py-3 text-gray-900 focus:border-black focus:outline-none font-mono text-sm"
+                rows={15}
+                required
+              />
+            </div>
+
+            {error && (
+              <p className="text-sm text-red-600">{error}</p>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="rounded-lg bg-black px-8 py-3 font-medium text-white transition-colors hover:bg-gray-800 disabled:bg-gray-400"
+            >
+              {loading ? 'Creating...' : `Create ${label}`}
+            </button>
+          </form>
+
+          <div className="mt-8 p-4 bg-blue-50 rounded-lg">
+            <h3 className="font-medium text-blue-900 mb-2">Supported Question Types</h3>
+            <ul className="text-sm text-blue-800 space-y-1">
+              <li><strong>Multiple Choice:</strong> Use A. B. C. options, mark correct with *</li>
+              <li><strong>Fill in the Blank:</strong> TYPE: fill-blank with SENTENCE: and ANSWER:</li>
+              <li><strong>Drag & Drop:</strong> TYPE: drag-drop with CORRECT_WORDS: and DISTRACTOR_WORDS:</li>
+              <li><strong>Hotspot:</strong> TYPE: hotspot - complete image upload in builder</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Upload mode
+  const backMode = activityType === 'quiz' ? 'quiz-choose' : 'escape-room-choose'
+  const label = activityType === 'quiz' ? 'Quiz' : 'Escape Room'
+
   return (
     <div className="min-h-screen p-8">
       <div className="mx-auto max-w-xl">
         <button
-          onClick={() => setMode('choose')}
+          onClick={() => {
+            setMode(backMode)
+            resetState()
+          }}
           className="mb-6 inline-block text-gray-600 hover:text-black"
         >
           ← Back to options
         </button>
 
-        <h1 className="mb-8 text-3xl font-bold">Upload Question File</h1>
+        <h1 className="mb-2 text-3xl font-bold">Upload {label} File</h1>
+        <p className="mb-8 text-gray-600">
+          Upload a .txt file with your questions.{' '}
+          <a
+            href={activityType === 'quiz' ? '/templates/quiz-template.txt' : '/templates/escape-room-template.txt'}
+            download
+            className="text-indigo-600 hover:underline"
+          >
+            Download template
+          </a>
+        </p>
 
         <form onSubmit={handleCreate} className="flex flex-col gap-6">
           <div>
@@ -210,7 +429,7 @@ export default function CreatePage() {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g., Chapter 5 Review"
+              placeholder={`e.g., Chapter 5 ${label}`}
               className="w-full rounded-lg border-2 border-gray-300 px-4 py-3 text-gray-900 focus:border-black focus:outline-none"
               required
             />
@@ -247,7 +466,7 @@ export default function CreatePage() {
             disabled={loading}
             className="rounded-lg bg-black px-8 py-3 font-medium text-white transition-colors hover:bg-gray-800 disabled:bg-gray-400"
           >
-            {loading ? 'Creating...' : 'Create Escape Room'}
+            {loading ? 'Creating...' : `Create ${label}`}
           </button>
         </form>
       </div>
