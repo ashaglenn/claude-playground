@@ -115,7 +115,7 @@ export default function GameHub() {
 
       <button
         onClick={handleNewGame}
-        className={`mt-4 text-sm underline ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
+        className={`cursor-pointer mt-4 text-sm underline ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
         style={{ color: 'var(--theme-text-muted)' }}
       >
         Start New Game

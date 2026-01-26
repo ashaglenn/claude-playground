@@ -48,7 +48,7 @@ export default function ReflectionScreen() {
       <div className="relative flex min-h-screen flex-col items-center justify-center gap-6 p-8">
         <button
           onClick={handleStartOver}
-          className={`absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
+          className={`cursor-pointer absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
           style={{ color: 'var(--theme-text-muted)' }}
         >
           ← Start Over
@@ -88,7 +88,7 @@ export default function ReflectionScreen() {
       <div className="relative flex min-h-screen flex-col items-center justify-center gap-6 p-8">
         <button
           onClick={handleStartOver}
-          className={`absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
+          className={`cursor-pointer absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
           style={{ color: 'var(--theme-text-muted)' }}
         >
           ← Start Over
@@ -121,7 +121,7 @@ export default function ReflectionScreen() {
     <div className="relative flex min-h-screen flex-col items-center justify-center gap-6 p-8">
       <button
         onClick={handleStartOver}
-        className={`absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
+        className={`cursor-pointer absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
         style={{ color: 'var(--theme-text-muted)' }}
       >
         ← Start Over
