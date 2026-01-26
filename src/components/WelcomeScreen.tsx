@@ -15,8 +15,20 @@ export default function WelcomeScreen() {
     dispatch({ type: 'GO_TO_HUB' })
   }
 
+  const handleStartOver = () => {
+    dispatch({ type: 'RESET_GAME' })
+  }
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+      <button
+        onClick={handleStartOver}
+        className={`absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
+        style={{ color: 'var(--theme-text-muted)' }}
+      >
+        ← Start Over
+      </button>
+
       <div className="w-full max-w-2xl">
         <h1
           className={`text-3xl font-bold mb-6 text-center ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}

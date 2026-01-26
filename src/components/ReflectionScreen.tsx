@@ -39,9 +39,20 @@ export default function ReflectionScreen() {
     setPickedWrongAnswer(null)
   }
 
+  const handleStartOver = () => {
+    dispatch({ type: 'RESET_GAME' })
+  }
+
   if (showCorrectPopup) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+      <div className="relative flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+        <button
+          onClick={handleStartOver}
+          className={`absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
+          style={{ color: 'var(--theme-text-muted)' }}
+        >
+          ← Start Over
+        </button>
         <div
           className="max-w-2xl rounded-lg border-2 p-8 text-center"
           style={{
@@ -74,7 +85,14 @@ export default function ReflectionScreen() {
       (wrongAnswer as any).reflectionWrongMessage ||
       'That is not correct. Try again.'
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+      <div className="relative flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+        <button
+          onClick={handleStartOver}
+          className={`absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
+          style={{ color: 'var(--theme-text-muted)' }}
+        >
+          ← Start Over
+        </button>
         <div
           className="max-w-2xl rounded-lg border-2 p-6"
           style={{
@@ -100,7 +118,14 @@ export default function ReflectionScreen() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+    <div className="relative flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+      <button
+        onClick={handleStartOver}
+        className={`absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
+        style={{ color: 'var(--theme-text-muted)' }}
+      >
+        ← Start Over
+      </button>
       <div className="w-full max-w-2xl">
         <h2
           className={`text-xl font-semibold mb-4 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}

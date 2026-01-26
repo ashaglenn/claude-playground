@@ -11,10 +11,21 @@ export default function LetterReveal() {
 
   const latestLetter = state.unlockedLetters[state.unlockedLetters.length - 1]
 
+  const handleStartOver = () => {
+    dispatch({ type: 'RESET_GAME' })
+  }
+
   if (!latestLetter) return null
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+    <div className="relative flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+      <button
+        onClick={handleStartOver}
+        className={`absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
+        style={{ color: 'var(--theme-text-muted)' }}
+      >
+        ← Start Over
+      </button>
       <h2
         className={`text-xl font-semibold ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
         style={{ color: 'var(--theme-text-muted)', fontFamily: 'var(--theme-font-heading)' }}

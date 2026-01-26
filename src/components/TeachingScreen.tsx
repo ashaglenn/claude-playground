@@ -16,8 +16,20 @@ export default function TeachingScreen() {
 
   const wrongAnswer = question.answers[state.currentWrongAnswer]
 
+  const handleStartOver = () => {
+    dispatch({ type: 'RESET_GAME' })
+  }
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+      <button
+        onClick={handleStartOver}
+        className={`absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
+        style={{ color: 'var(--theme-text-muted)' }}
+      >
+        ← Start Over
+      </button>
+
       <div className="w-full max-w-2xl">
         <h2
           className={`text-xl font-semibold mb-4 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
