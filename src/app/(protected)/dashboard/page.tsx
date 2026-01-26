@@ -84,68 +84,131 @@ export default function DashboardPage() {
   const handleDeleteSession = async (sessionId: string) => {
     if (!confirm('Are you sure you want to delete this result?')) return
 
-    await supabase.from('student_sessions').delete().eq('id', sessionId)
+    const { error } = await supabase.from('student_sessions').delete().eq('id', sessionId)
+
+    if (error) {
+      console.error('Error deleting session:', error)
+      alert('Failed to delete result. Please try again.')
+      return
+    }
+
     setSessions(sessions.filter(s => s.id !== sessionId))
-    loadEscapeRooms() // Refresh counts
+    // Update local escapeRooms state to reflect the change immediately
+    setEscapeRooms(escapeRooms.map(room => ({
+      ...room,
+      student_sessions: room.student_sessions.filter(s => s.id !== sessionId)
+    })))
   }
 
   // Archive individual session
   const handleArchiveSession = async (sessionId: string) => {
-    await supabase
+    const { error } = await supabase
       .from('student_sessions')
       .update({ archived_at: new Date().toISOString() })
       .eq('id', sessionId)
 
+    if (error) {
+      console.error('Error archiving session:', error)
+      alert('Failed to archive result. Please try again.')
+      return
+    }
+
+    const archivedAt = new Date().toISOString()
     if (!showArchived) {
       setSessions(sessions.filter(s => s.id !== sessionId))
     } else {
       setSessions(sessions.map(s =>
-        s.id === sessionId ? { ...s, archived_at: new Date().toISOString() } : s
+        s.id === sessionId ? { ...s, archived_at: archivedAt } : s
       ))
     }
-    loadEscapeRooms() // Refresh counts
+    // Update local escapeRooms state
+    setEscapeRooms(escapeRooms.map(room => ({
+      ...room,
+      student_sessions: room.student_sessions.map(s =>
+        s.id === sessionId ? { ...s, archived_at: archivedAt } : s
+      )
+    })))
   }
 
   // Restore archived session
   const handleRestoreSession = async (sessionId: string) => {
-    await supabase
+    const { error } = await supabase
       .from('student_sessions')
       .update({ archived_at: null })
       .eq('id', sessionId)
 
+    if (error) {
+      console.error('Error restoring session:', error)
+      alert('Failed to restore result. Please try again.')
+      return
+    }
+
     setSessions(sessions.map(s =>
       s.id === sessionId ? { ...s, archived_at: null } : s
     ))
-    loadEscapeRooms() // Refresh counts
+    // Update local escapeRooms state
+    setEscapeRooms(escapeRooms.map(room => ({
+      ...room,
+      student_sessions: room.student_sessions.map(s =>
+        s.id === sessionId ? { ...s, archived_at: null } : s
+      )
+    })))
   }
 
   // Clear all results for an activity
   const handleClearAllResults = async (roomId: string) => {
     if (!confirm('Are you sure you want to delete ALL results for this activity? This cannot be undone.')) return
 
-    await supabase.from('student_sessions').delete().eq('escape_room_id', roomId)
+    const { error } = await supabase.from('student_sessions').delete().eq('escape_room_id', roomId)
+
+    if (error) {
+      console.error('Error clearing results:', error)
+      alert('Failed to clear results. Please try again.')
+      return
+    }
+
     setSessions([])
-    loadEscapeRooms() // Refresh counts
+    // Update local escapeRooms state to reflect the change immediately
+    setEscapeRooms(escapeRooms.map(room =>
+      room.id === roomId
+        ? { ...room, student_sessions: [] }
+        : room
+    ))
   }
 
   // Archive all results for an activity
   const handleArchiveAllResults = async (roomId: string) => {
     if (!confirm('Are you sure you want to archive all results for this activity?')) return
 
-    await supabase
+    const { error } = await supabase
       .from('student_sessions')
       .update({ archived_at: new Date().toISOString() })
       .eq('escape_room_id', roomId)
       .is('archived_at', null)
 
+    if (error) {
+      console.error('Error archiving results:', error)
+      alert('Failed to archive results. Please try again.')
+      return
+    }
+
+    const archivedAt = new Date().toISOString()
     if (!showArchived) {
       setSessions([])
     } else {
-      if (selectedRoom === roomId) {
-        loadSessions(roomId, true)
-      }
+      setSessions(sessions.map(s => ({ ...s, archived_at: archivedAt })))
     }
-    loadEscapeRooms() // Refresh counts
+    // Update local escapeRooms state
+    setEscapeRooms(escapeRooms.map(room =>
+      room.id === roomId
+        ? {
+            ...room,
+            student_sessions: room.student_sessions.map(s =>
+              s.archived_at ? s : { ...s, archived_at: archivedAt }
+            )
+          }
+        : room
+    ))
   }
 
   // Toggle archived view
