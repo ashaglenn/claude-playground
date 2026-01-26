@@ -36,7 +36,7 @@ export default function EscapedScreen() {
 
       <button
         onClick={handlePlayAgain}
-        className="mt-8 rounded-lg px-8 py-4 text-lg font-medium transition-colors"
+        className="cursor-pointer mt-8 rounded-lg px-8 py-4 text-lg font-medium transition-colors"
         style={{
           backgroundColor: 'var(--theme-primary)',
           color: 'var(--theme-primary-text)',

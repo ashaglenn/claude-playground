@@ -61,7 +61,7 @@ export default function FinalLock() {
       <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
         <button
           onClick={handleBackToHub}
-          className={`absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
+          className={`cursor-pointer absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
           style={{ color: 'var(--theme-text-muted)' }}
         >
           ← Back to Hub
@@ -94,7 +94,7 @@ export default function FinalLock() {
 
         <button
           onClick={() => dispatch({ type: 'ESCAPED' })}
-          className="mt-4 rounded-xl px-8 py-4 text-lg font-semibold transition-all hover:scale-105"
+          className="cursor-pointer mt-4 rounded-xl px-8 py-4 text-lg font-semibold transition-all hover:scale-105"
           style={{
             backgroundColor: 'var(--theme-primary)',
             color: 'var(--theme-primary-text)',
@@ -110,7 +110,7 @@ export default function FinalLock() {
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
       <button
         onClick={handleBackToHub}
-        className={`absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
+        className={`cursor-pointer absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
         style={{ color: 'var(--theme-text-muted)' }}
       >
         ← Back to Hub
@@ -184,7 +184,7 @@ export default function FinalLock() {
 
         <button
           type="submit"
-          className="w-full rounded-xl px-8 py-4 text-lg font-semibold transition-all hover:scale-105 shadow-lg"
+          className="cursor-pointer w-full rounded-xl px-8 py-4 text-lg font-semibold transition-all hover:scale-105 shadow-lg"
           style={{
             backgroundColor: 'var(--theme-primary)',
             color: 'var(--theme-primary-text)',

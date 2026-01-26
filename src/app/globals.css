@@ -52,6 +52,7 @@ body {
   font-weight: 600;
   transition: all 0.2s ease;
   box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.4);
+  cursor: pointer;
 }
 
 .btn-primary:hover {
@@ -68,6 +69,7 @@ body {
   font-weight: 600;
   border: 2px solid var(--primary);
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .btn-secondary:hover {

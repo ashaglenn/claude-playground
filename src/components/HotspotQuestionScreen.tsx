@@ -171,7 +171,7 @@ export default function HotspotQuestionScreen({ question }: HotspotQuestionScree
           <p className="text-xl font-medium mb-6">{question.correctMessage}</p>
           <button
             onClick={handleContinue}
-            className="rounded-lg px-8 py-3 text-lg font-medium transition-colors"
+            className="cursor-pointer rounded-lg px-8 py-3 text-lg font-medium transition-colors"
             style={{
               backgroundColor: 'var(--theme-primary)',
               color: 'var(--theme-primary-text)',

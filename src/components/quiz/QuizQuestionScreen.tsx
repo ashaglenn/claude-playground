@@ -118,7 +118,7 @@ function MultipleChoiceQuizQuestion({
               <button
                 key={originalKey}
                 onClick={() => handleAnswer(originalKey)}
-                className="rounded-lg border-2 px-6 py-4 text-left transition-colors hover:opacity-80"
+                className="cursor-pointer rounded-lg border-2 px-6 py-4 text-left transition-colors hover:opacity-80"
                 style={{
                   backgroundColor: 'var(--theme-card-background)',
                   borderColor: 'var(--theme-border)',
@@ -329,7 +329,7 @@ function DragDropQuizQuestion({
         {index < parts.length - 1 && (
           <button
             onClick={() => handleBlankClick(index)}
-            className="inline-block mx-1 px-3 py-1 rounded border-2 border-dashed min-w-[80px]"
+            className="cursor-pointer inline-block mx-1 px-3 py-1 rounded border-2 border-dashed min-w-[80px]"
             style={{
               backgroundColor: placedWords[index] ? 'var(--theme-primary)' : 'var(--theme-card-background)',
               borderColor: 'var(--theme-border)',
@@ -370,7 +370,7 @@ function DragDropQuizQuestion({
             <button
               key={`${word}-${index}`}
               onClick={() => handleWordClick(word)}
-              className="px-4 py-2 rounded-lg font-medium transition-colors hover:opacity-80"
+              className="cursor-pointer px-4 py-2 rounded-lg font-medium transition-colors hover:opacity-80"
               style={{
                 backgroundColor: 'var(--theme-accent)',
                 color: 'var(--theme-primary-text)',
@@ -384,7 +384,7 @@ function DragDropQuizQuestion({
         {allFilled && (
           <button
             onClick={handleSubmit}
-            className="w-full rounded-lg px-8 py-3 text-lg font-medium transition-colors"
+            className="cursor-pointer w-full rounded-lg px-8 py-3 text-lg font-medium transition-colors"
             style={{
               backgroundColor: 'var(--theme-primary)',
               color: 'var(--theme-primary-text)',
@@ -475,7 +475,7 @@ function FillBlankQuizQuestion({
           <button
             type="submit"
             disabled={!answer.trim()}
-            className="w-full rounded-lg px-8 py-3 text-lg font-medium transition-colors disabled:opacity-50"
+            className="cursor-pointer w-full rounded-lg px-8 py-3 text-lg font-medium transition-colors disabled:opacity-50"
             style={{
               backgroundColor: 'var(--theme-primary)',
               color: 'var(--theme-primary-text)',

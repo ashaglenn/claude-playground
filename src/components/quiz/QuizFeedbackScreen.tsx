@@ -68,7 +68,7 @@ export default function QuizFeedbackScreen() {
 
           <button
             onClick={handleNext}
-            className="rounded-lg px-8 py-3 text-lg font-medium transition-colors"
+            className="cursor-pointer rounded-lg px-8 py-3 text-lg font-medium transition-colors"
             style={{
               backgroundColor: 'var(--theme-primary)',
               color: 'var(--theme-primary-text)',

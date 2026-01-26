@@ -35,7 +35,7 @@ export default function StartScreen() {
 
       <button
         onClick={() => fileInputRef.current?.click()}
-        className="rounded-lg bg-black px-8 py-4 text-lg font-medium text-white transition-colors hover:bg-gray-800"
+        className="cursor-pointer rounded-lg bg-black px-8 py-4 text-lg font-medium text-white transition-colors hover:bg-gray-800"
       >
         Upload Question File
       </button>

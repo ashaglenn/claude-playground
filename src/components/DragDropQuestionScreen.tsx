@@ -170,7 +170,7 @@ export default function DragDropQuestionScreen({ question }: DragDropQuestionScr
           <p className="text-xl font-medium mb-6">{question.correctMessage}</p>
           <button
             onClick={handleContinue}
-            className="rounded-lg px-8 py-3 text-lg font-medium transition-colors"
+            className="cursor-pointer rounded-lg px-8 py-3 text-lg font-medium transition-colors"
             style={{
               backgroundColor: 'var(--theme-primary)',
               color: 'var(--theme-primary-text)',
@@ -189,7 +189,7 @@ export default function DragDropQuestionScreen({ question }: DragDropQuestionScr
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
       <button
         onClick={handleBackToHub}
-        className={`absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
+        className={`cursor-pointer absolute top-4 left-4 text-sm hover:opacity-70 ${isClassicTheme && hasBackground ? 'text-highlight' : ''}`}
         style={{ color: 'var(--theme-text-muted)' }}
       >
         ← Back to Hub
@@ -273,7 +273,7 @@ export default function DragDropQuestionScreen({ question }: DragDropQuestionScr
         <button
           onClick={handleSubmit}
           disabled={!allBlanksFilled}
-          className="w-full rounded-lg px-6 py-3 text-lg font-medium transition-colors disabled:opacity-50"
+          className="cursor-pointer w-full rounded-lg px-6 py-3 text-lg font-medium transition-colors disabled:opacity-50"
           style={{
             backgroundColor: 'var(--theme-primary)',
             color: 'var(--theme-primary-text)',

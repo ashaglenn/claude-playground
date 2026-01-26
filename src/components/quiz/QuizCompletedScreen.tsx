@@ -70,7 +70,7 @@ export default function QuizCompletedScreen() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={handlePlayAgain}
-              className="rounded-lg px-8 py-3 text-lg font-medium transition-colors"
+              className="cursor-pointer rounded-lg px-8 py-3 text-lg font-medium transition-colors"
               style={{
                 backgroundColor: 'var(--theme-primary)',
                 color: 'var(--theme-primary-text)',
@@ -80,7 +80,7 @@ export default function QuizCompletedScreen() {
             </button>
             <a
               href="/"
-              className="rounded-lg px-8 py-3 text-lg font-medium transition-colors border-2"
+              className="cursor-pointer rounded-lg px-8 py-3 text-lg font-medium transition-colors border-2"
               style={{
                 borderColor: 'var(--theme-border)',
                 color: 'var(--theme-text)',
